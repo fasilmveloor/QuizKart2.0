@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">QuizKart</string>
+    <string name="quiz">QUIZ</string>
+    <string name="dot">.</string>
+    <string name="kart">KART</string>
+    <string name="quiz_kart_logo">QuizKart Logo</string>
+</resources>
