@@ -8,4 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="head_text_splash">#C4C2Cd</color>
+    <color name="next_1">#8B88DC</color>
+    <color name="next_2">#0183C5</color>
+    <color name="next_3">#2F6DFF</color>
+    <color name="next_4">#5FA091</color>
 </resources>

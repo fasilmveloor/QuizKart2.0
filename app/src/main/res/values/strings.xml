@@ -4,4 +4,10 @@
     <string name="dot">.</string>
     <string name="kart">KART</string>
     <string name="quiz_kart_logo">QuizKart Logo</string>
+    <string name="viewpager_text">viewpager to display screens</string>
+    <string name="demo_content">Lorem ipsum dolor sit amet, consectetur\n adipiscing elit. Vivamus sodales faucibus\n dapibus. Etiam mattis leo quis laoreet dictum.</string>
+    <string name="demo_title">Welcome To QuizKart</string>
+    <string name="todo">TODO</string>
+    <string name="picture_of_person_giving_test">Picture of person giving test</string>
+    <string name="next">Next</string>
 </resources>

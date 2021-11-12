@@ -10,9 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QuizKart">
         <activity
+            android:name=".OnBoardingActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
+        <activity
             android:name=".MainActivity"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
