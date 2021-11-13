@@ -20,4 +20,8 @@
     <string name="google_icon">google icon</string>
     <string name="facebook_icon">Facebook Icon</string>
     <string name="new_user_register_now">New User? Register Now</string>
+    <string name="signup">SignUp</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="full_name">Full Name</string>
+    <string name="username">UserName</string>
 </resources>
