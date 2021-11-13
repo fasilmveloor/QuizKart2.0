@@ -1,5 +1,6 @@
 package com.example.quizkart;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -36,10 +37,10 @@ public class OnBoardingActivity extends AppCompatActivity {
             if (activityOnBoardingBinding.onBoardingViewPager.getCurrentItem() < onBoardingAdapter.getCount() - 1) {
                 activityOnBoardingBinding.onBoardingViewPager.setCurrentItem(activityOnBoardingBinding.onBoardingViewPager.getCurrentItem() + 1, true);
             }
-            /*else {
-                Intent i = new Intent(OnBoardingActivity.this, LoginTestActivity.class);
+            else {
+                Intent i = new Intent(OnBoardingActivity.this, LoginActivity.class);
                 startActivity(i);
-            }*/
+            }
         }
     }
 

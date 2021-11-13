@@ -10,9 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QuizKart">
         <activity
-            android:name=".OnBoardingActivity"
+            android:name=".LoginActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
+        <activity
+            android:name=".OnBoardingActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
