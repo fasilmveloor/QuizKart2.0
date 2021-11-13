@@ -24,4 +24,6 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="full_name">Full Name</string>
     <string name="username">UserName</string>
+    <string name="back_to_login">Back to Login</string>
+    <string name="submit">Submit</string>
 </resources>

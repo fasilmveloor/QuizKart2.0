@@ -19,6 +19,7 @@ public class LoginActivity extends AppCompatActivity {
         View view = activityLoginBinding.getRoot();
         setContentView(view);
         activityLoginBinding.gotoRegister.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, SignUpActivity.class)));
+        activityLoginBinding.forgotPassword.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class)));
     }
     public void slideUp(View view){
         //startActivity(new Intent(LoginTestActivity.this, WelcomeActivity.class));
