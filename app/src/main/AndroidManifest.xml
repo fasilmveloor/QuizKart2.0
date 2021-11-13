@@ -11,10 +11,12 @@
         android:theme="@style/Theme.QuizKart">
         <activity
             android:name=".WelcomeActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
         <activity
             android:name=".ForgotPasswordActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
         <activity
             android:name=".SignUpActivity"
             android:exported="false"

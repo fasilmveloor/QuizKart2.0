@@ -1,5 +1,6 @@
 package com.example.quizkart;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -17,11 +18,12 @@ public class SignUpActivity extends AppCompatActivity {
         activitySignUpBinding = ActivitySignUpBinding.inflate(getLayoutInflater());
         View view = activitySignUpBinding.getRoot();
         setContentView(view);
+        activitySignUpBinding.gotoLogin.setOnClickListener(v -> startActivity(new Intent(SignUpActivity.this, LoginActivity.class)));
     }
 
     public void slideUp(View view){
-        //startActivity(new Intent(SignUpActivity.this, WelcomeActivity.class));
+        startActivity(new Intent(SignUpActivity.this, WelcomeActivity.class));
         //customType(LoginTestActivity.this,"bottom-to-up");
-        //this.overridePendingTransition(R.anim.bottom_to_up, R.anim.bottom_to_up2);
+        this.overridePendingTransition(R.anim.bottom_to_up, R.anim.bottom_to_up2);
     }
 }

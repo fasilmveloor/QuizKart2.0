@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".WelcomeActivity">
+
+    <View
+        android:id="@+id/topView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#0099FF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHeight_default="percent"
+        app:layout_constraintHeight_percent="0.16"/>
+
+    <TextView
+        android:id="@+id/topText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="36dp"
+        android:text="@string/welcome_to_QuizKart"
+        android:textColor="@android:color/white"
+        android:autoSizeMaxTextSize="40sp"
+        android:autoSizeMinTextSize="20sp"
+        android:autoSizeStepGranularity="2sp"
+        android:autoSizeTextType="uniform"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/topView"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/topView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/topView"
+        app:layout_constraintHeight_default="percent"
+        app:layout_constraintHeight_percent="0.09"/>
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="@string/welcome_message"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topView"
+        android:autoSizeMaxTextSize="40sp"
+        android:autoSizeMinTextSize="20sp"
+        android:autoSizeStepGranularity="2sp"
+        android:autoSizeTextType="uniform"
+        android:textStyle="bold"
+        android:textColor="@color/colorlogin"
+        android:gravity="center"
+        app:layout_constraintHeight_default="percent"
+        app:layout_constraintHeight_percent="0.29"
+        android:layout_margin="@dimen/margin_8dp"/>
+
+    <Button
+        android:id="@+id/back_to_login"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="@string/back_to_login"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        android:background="@drawable/round_bg"
+        android:textColor="@android:color/white"
+        android:autoSizeMaxTextSize="22sp"
+        android:autoSizeMinTextSize="10sp"
+        android:autoSizeStepGranularity="2sp"
+        android:autoSizeTextType="uniform"
+        android:textStyle="bold"
+        app:layout_constraintHeight_default="percent"
+        app:layout_constraintHeight_percent="0.076"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

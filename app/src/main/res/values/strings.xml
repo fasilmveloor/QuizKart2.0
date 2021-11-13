@@ -26,4 +26,6 @@
     <string name="username">UserName</string>
     <string name="back_to_login">Back to Login</string>
     <string name="submit">Submit</string>
+    <string name="welcome_to_QuizKart">Welcome To QuizKart</string>
+    <string name="welcome_message">Welcome To QuizKart, Your Registration is Successful, You Can Go back to LoginPage and Login using your username and password, Happy Learning</string>
 </resources>
