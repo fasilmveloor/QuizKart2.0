@@ -13,4 +13,13 @@
 
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="Theme.QuizKart.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.QuizKart.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.QuizKart.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

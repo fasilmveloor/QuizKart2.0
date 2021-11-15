@@ -3,19 +3,37 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/user/AndroidStudioProjects/QuizKart2/app/src/main/res/drawable/ic_arrow_left.xml" value="0.12578125" />
         <entry key="..\:/Users/user/AndroidStudioProjects/QuizKart2/app/src/main/res/drawable/ic_email.xml" value="0.1015625" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/QuizKart2/app/src/main/res/drawable/ic_menu.xml" value="0.12578125" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/QuizKart2/app/src/main/res/drawable/ic_menu_camera.xml" value="0.146875" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/QuizKart2/app/src/main/res/drawable/ic_menu_gallery.xml" value="0.146875" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/QuizKart2/app/src/main/res/drawable/ic_menu_slideshow.xml" value="0.146875" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/QuizKart2/app/src/main/res/drawable/ic_more_vertical.xml" value="0.12578125" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/QuizKart2/app/src/main/res/drawable/ic_play_circle.xml" value="0.12578125" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/QuizKart2/app/src/main/res/drawable/ic_search.xml" value="0.28515625" />
         <entry key="..\:/Users/user/AndroidStudioProjects/QuizKart2/app/src/main/res/drawable/onboarding_activity_button_3.xml" value="0.1015625" />
         <entry key="..\:/Users/user/AndroidStudioProjects/QuizKart2/app/src/main/res/drawable/onboarding_activity_button_4.xml" value="0.1015625" />
         <entry key="..\:/Users/user/AndroidStudioProjects/QuizKart2/app/src/main/res/font/aclonica.xml" value="0.21822916666666667" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/QuizKart2/app/src/main/res/font/nunito.xml" value="0.30625" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/QuizKart2/app/src/main/res/layout/activity_dash_board.xml" value="0.28203125" />
         <entry key="..\:/Users/user/AndroidStudioProjects/QuizKart2/app/src/main/res/layout/activity_forgot_password.xml" value="0.18802083333333333" />
         <entry key="..\:/Users/user/AndroidStudioProjects/QuizKart2/app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="..\:/Users/user/AndroidStudioProjects/QuizKart2/app/src/main/res/layout/activity_main.xml" value="0.12" />
         <entry key="..\:/Users/user/AndroidStudioProjects/QuizKart2/app/src/main/res/layout/activity_sign_up.xml" value="0.1" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/QuizKart2/app/src/main/res/layout/activity_test_details.xml" value="0.25" />
         <entry key="..\:/Users/user/AndroidStudioProjects/QuizKart2/app/src/main/res/layout/activity_welcome.xml" value="0.33" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/QuizKart2/app/src/main/res/layout/app_bar_dash_board.xml" value="0.28203125" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/QuizKart2/app/src/main/res/layout/category_row_items.xml" value="0.2609375" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/QuizKart2/app/src/main/res/layout/fragment_home.xml" value="0.25" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/QuizKart2/app/src/main/res/layout/fragment_slideshow.xml" value="0.128125" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/QuizKart2/app/src/main/res/layout/nav_header_dash_board.xml" value="0.2" />
         <entry key="..\:/Users/user/AndroidStudioProjects/QuizKart2/app/src/main/res/layout/onboarding_1.xml" value="0.18802083333333333" />
         <entry key="..\:/Users/user/AndroidStudioProjects/QuizKart2/app/src/main/res/layout/onboarding_2.xml" value="0.18802083333333333" />
         <entry key="..\:/Users/user/AndroidStudioProjects/QuizKart2/app/src/main/res/layout/onboarding_3.xml" value="0.1" />
         <entry key="..\:/Users/user/AndroidStudioProjects/QuizKart2/app/src/main/res/layout/onboarding_4.xml" value="0.1" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/QuizKart2/app/src/main/res/layout/quiz_list_row_items.xml" value="0.2609375" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/QuizKart2/app/src/main/res/menu/dash_board.xml" value="0.12265625" />
       </map>
     </option>
   </component>

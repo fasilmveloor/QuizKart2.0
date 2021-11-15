@@ -28,4 +28,18 @@
     <string name="submit">Submit</string>
     <string name="welcome_to_QuizKart">Welcome To QuizKart</string>
     <string name="welcome_message">Welcome To QuizKart, Your Registration is Successful, You Can Go back to LoginPage and Login using your username and password, Happy Learning</string>
+    <string name="title_activity_dash_board">DashBoardActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="course_content">Course Content</string>
+    <string name="start_test">Course Content</string>
+    <string name="test_name">Course Content</string>
 </resources>

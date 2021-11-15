@@ -10,13 +10,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QuizKart">
         <activity
+            android:name=".TestDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DashBoardActivity"
+            android:exported="false"
+            android:label="@string/title_activity_dash_board"
+            android:theme="@style/Theme.QuizKart.NoActionBar" />
+        <activity
             android:name=".WelcomeActivity"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
         <activity
             android:name=".ForgotPasswordActivity"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
         <activity
             android:name=".SignUpActivity"
             android:exported="false"

@@ -22,8 +22,8 @@ public class LoginActivity extends AppCompatActivity {
         activityLoginBinding.forgotPassword.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class)));
     }
     public void slideUp(View view){
-        //startActivity(new Intent(LoginTestActivity.this, WelcomeActivity.class));
+        startActivity(new Intent(LoginActivity.this, DashBoardActivity.class));
         //customType(LoginTestActivity.this,"bottom-to-up");
-        //this.overridePendingTransition(R.anim.bottom_to_up, R.anim.bottom_to_up2);
+        this.overridePendingTransition(R.anim.bottom_to_up, R.anim.bottom_to_up2);
     }
 }
