@@ -1,0 +1,41 @@
+[
+  {
+    "id": 1,
+    "name": "Java",
+    "question" : 25
+  },
+  {
+    "id": 2,
+    "name": "Python",
+    "question" : 25
+  },
+  {
+    "id": 3,
+    "name": "C",
+    "question" : 25
+  }, {
+    "id": 4,
+    "name": "C++",
+    "question" : 25
+  },
+  {
+    "id": 5,
+    "name": "HTML",
+    "question" : 25
+  },
+  {
+    "id": 6,
+    "name": "Javascript",
+    "question" : 25
+  },
+  {
+    "id": 7,
+    "name": "PHP",
+    "question" : 25
+  },
+  {
+    "id": 8,
+    "name": "Ruby",
+    "question" : 25
+  }
+]

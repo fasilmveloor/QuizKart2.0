@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.HomeFragment">
+    tools:context=".ui.home.HomeFragment"
+    android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
 
     <TextView
         android:id="@+id/textView"
@@ -25,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/nunito_bold"
-        android:text="Find a course you want to learn"
+        android:text="Find a Quiz you want to play"
         android:textColor="#61688b"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/textView"
@@ -43,7 +44,7 @@
         android:drawablePadding="16dp"
         android:ems="10"
         android:fontFamily="@font/nunito"
-        android:hint="Search for courses"
+        android:hint="Search for Quizes"
         android:inputType="textPersonName"
         android:paddingStart="16dp"
         android:singleLine="true"
@@ -58,7 +59,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:fontFamily="@font/nunito_semibold"
-        android:text="Categories"
+        android:text="Tests Available"
         android:textColor="#0D1333"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -77,7 +78,7 @@
         app:layout_constraintTop_toTopOf="@+id/textView3" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/course_recycler"
+        android:id="@+id/quiz_recycler"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"

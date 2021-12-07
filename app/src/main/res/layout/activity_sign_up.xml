@@ -76,7 +76,7 @@
         android:autofillHints="@string/email" />
 
     <EditText
-        android:id="@+id/full_name"
+        android:id="@+id/first_name"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="32dp"
@@ -86,15 +86,15 @@
         android:drawableStart="@drawable/ic_email"
         android:drawablePadding="16dp"
         android:ems="10"
-        android:hint="@string/full_name"
+        android:hint="First name"
+        android:autofillHints="First name"
         android:inputType="textEmailAddress"
         android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputEmail"
         app:layout_constraintHeight_default="percent"
         app:layout_constraintHeight_percent="0.1"
-        android:autofillHints="@string/full_name" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/inputEmail" />
 
     <EditText
         android:id="@+id/username"
@@ -107,15 +107,15 @@
         android:drawableStart="@drawable/ic_email"
         android:drawablePadding="16dp"
         android:ems="10"
-        android:hint="@string/username"
+        android:hint="@string/last_name"
         android:inputType="textEmailAddress"
         android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/full_name"
+        app:layout_constraintTop_toBottomOf="@+id/first_name"
         app:layout_constraintHeight_default="percent"
         app:layout_constraintHeight_percent="0.1"
-        android:autofillHints="@string/username" />
+        android:autofillHints="@string/last_name" />
 
     <EditText
         android:id="@+id/inputPassword"

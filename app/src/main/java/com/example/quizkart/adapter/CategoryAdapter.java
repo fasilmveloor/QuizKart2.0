@@ -1,5 +1,6 @@
 package com.example.quizkart.adapter;
 
+
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -11,18 +12,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.quizkart.R;
 import com.example.quizkart.TestDetailsActivity;
 import com.example.quizkart.models.Category;
+import com.example.quizkart.ui.home.HomeFragment;
 
 import java.util.List;
+import java.util.Objects;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
-    private Context context;
-    List<Category> categoryList;
+    private HomeFragment context;
+    List<Object> categoryList;
 
-    public CategoryAdapter(Context context, List<Category> categoryList) {
+    public CategoryAdapter(HomeFragment context, List<Object> categoryList) {
         this.context = context;
         this.categoryList = categoryList;
     }
@@ -30,7 +32,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     @NonNull
     @Override
     public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.category_row_items, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.category_row_items, parent, false);
 
 
         // now here we create a recyclerview row items.
@@ -41,19 +43,19 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
 
         // here we will bind data in recyclerview ro items.
-
-        holder.categoryName.setText(categoryList.get(position).getCategoryName());
-        holder.totalCategory.setText(categoryList.get(position).getTotalCourses());
+        Category category = (Category) categoryList.get(position);
+        holder.categoryName.setText(category.getName());
+        holder.totalCategory.setText(String.valueOf(category.getQuestion()));
 
         // for image we need to add glide image fetching library from netwok
 
-        Glide.with(context).load(categoryList.get(position).getImage()).into(holder.categoryImage);
+        holder.categoryImage.setImageResource(R.drawable.business);
 
         holder.itemView.setOnClickListener(view -> {
 
-            Intent i = new Intent(context, TestDetailsActivity.class);
-            context.startActivity(i);
-
+            Intent i = new Intent(view.getContext(), TestDetailsActivity.class);
+            i.putExtra("name", category.getName());
+            view.getContext().startActivity(i);
         });
 
     }
@@ -72,9 +74,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            categoryImage = itemView.findViewById(R.id.course);
-            categoryName = itemView.findViewById(R.id.course_name);
-            totalCategory = itemView.findViewById(R.id.total_course);
+            categoryImage = itemView.findViewById(R.id.quiz_image);
+            categoryName = itemView.findViewById(R.id.quiz_name);
+            totalCategory = itemView.findViewById(R.id.quiz_questions);
 
 
         }
