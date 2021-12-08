@@ -46,13 +46,7 @@ public class HomeFragment extends Fragment {
         binding.quizRecycler.setHasFixedSize(true);
         addItemsFromJSON();
         categoryAdapter = new CategoryAdapter(this, viewItems);
-        try {
-            binding.quizRecycler.setAdapter(categoryAdapter);
-        }
-        catch (Exception e)
-        {
-            Toast.makeText(container.getContext(), e.toString(), Toast.LENGTH_LONG);
-        }
+        binding.quizRecycler.setAdapter(categoryAdapter);
         return root;
     }
 

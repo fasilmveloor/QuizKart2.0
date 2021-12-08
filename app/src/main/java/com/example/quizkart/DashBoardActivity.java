@@ -1,12 +1,16 @@
 package com.example.quizkart;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -50,9 +54,49 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.action_logout:
+                showSignOutAlert();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_dash_board);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+    private void showSignOutAlert() {
+        new AlertDialog.Builder(this)
+                .setTitle(getResources().getString(R.string.sign_out_title))
+                .setMessage(getString(R.string.sign_out_message))
+                .setPositiveButton(getResources().getString(R.string.sign_out_ok), (dialog, which) -> {
+                    try {
+                        ///if (currentUser != null)
+                        if(true)
+                        {
+                            Intent signInIntent = new Intent(this, LoginActivity.class);
+                            startActivity(signInIntent);
+                            this.finishAffinity();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                })
+                .setNegativeButton(getString(R.string.sign_out_cancel), (dialog, which) -> dialog.dismiss())
+                .create().show();
+    }
+
+    public void gotoSettings(MenuItem item) {
+        Intent i = new Intent(this, SettingsActivity.class);
+        startActivity(i);
+    }
+    public void moveToProfile(View view) {
+        Intent i = new Intent(this, UserProfileActivity.class);
+        startActivity(i);
     }
 }
