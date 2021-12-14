@@ -90,7 +90,7 @@ public class DashBoardActivity extends AppCompatActivity {
                 .setNegativeButton(getString(R.string.sign_out_cancel), (dialog, which) -> dialog.dismiss())
                 .create().show();
     }
-
+   // keep this in try and catch
     public void gotoSettings(MenuItem item) {
         Intent i = new Intent(this, SettingsActivity.class);
         startActivity(i);

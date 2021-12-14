@@ -48,7 +48,7 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     private void initializeGUI() {
-        mImgUserPic = activityUserProfileBinding.imgUserPic;
+       // mImgUserPic = activityUserProfileBinding.imgUserPic;
         mEtSlackHandle = activityUserProfileBinding.tietSlackHandle;
         mBtnEditProfile = activityUserProfileBinding.btnEditProfile;
         mEtUserName = activityUserProfileBinding.etUserName;

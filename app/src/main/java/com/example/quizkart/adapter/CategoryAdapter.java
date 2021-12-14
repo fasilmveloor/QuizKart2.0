@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -52,10 +53,15 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         holder.categoryImage.setImageResource(R.drawable.business);
 
         holder.itemView.setOnClickListener(view -> {
+            try{
+                Intent i = new Intent(view.getContext(), TestDetailsActivity.class);
+                i.putExtra("name", category.getName());
+                view.getContext().startActivity(i);
+            }
+            catch (Exception e){
+                Toast.makeText(view.getContext(),e+"",Toast.LENGTH_LONG).show();
+            }
 
-            Intent i = new Intent(view.getContext(), TestDetailsActivity.class);
-            i.putExtra("name", category.getName());
-            view.getContext().startActivity(i);
         });
 
     }

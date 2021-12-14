@@ -46,24 +46,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_edit" />
 
-    <ImageView
-        android:id="@+id/img_user_pic"
-        android:layout_width="@dimen/box_large"
-        android:layout_height="@dimen/box_large"
-        app:civ_border_width="4dp"
-        app:layout_constraintBottom_toBottomOf="@+id/view"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.505"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view"
-        app:layout_constraintVertical_bias="0.107"
-        tools:src="@drawable/bg" />
-
     <EditText
         android:id="@+id/et_user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:background="@android:color/transparent"
         android:hint="@string/name_hint"
         android:imeOptions="actionDone"
@@ -74,7 +60,7 @@
         android:textStyle="normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img_user_pic"
+        tools:layout_editor_absoluteY="168dp"
         tools:text="Akshit Jain" />
 
     <androidx.cardview.widget.CardView
