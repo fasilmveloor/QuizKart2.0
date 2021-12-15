@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.example.quizkart.databinding.ActivityTestDetailsBinding;
 import com.example.quizkart.presenter.TestAttemptPresenter;
-import com.example.quizkart.presenter.TestDetailsPresenter;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Locale;
@@ -28,7 +28,7 @@ public class TestDetailsActivity extends AppCompatActivity implements View.OnCli
     private TextView mTvQuizAttemptedStatus;
     private FloatingActionButton mFabStart;
 
-    TestDetailsPresenter mPresenter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +47,9 @@ public class TestDetailsActivity extends AppCompatActivity implements View.OnCli
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(AppCompatResources.getDrawable(this,R.drawable.ic_clear_black_24dp));
         }
-        mPresenter = new TestDetailsPresenter();
         mTvQuizTitle = activityTestDetailsBinding.quizDetailsLabelQuiz;
         mTvQuizDescription = activityTestDetailsBinding.quizDetailsLabelAbout;
         mTvQuizAttemptedStatus = activityTestDetailsBinding.quizDetailsLabelAbout;
-
         mFabStart = findViewById(R.id.quiz_details_fab_start);
         mFabStart.setOnClickListener(this);
     }
@@ -61,8 +59,11 @@ public class TestDetailsActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onResume() {
         super.onResume();
-        mFabStart.setVisibility(View.GONE);
-        mPresenter.start(getIntent().getExtras());
+        mFabStart.setVisibility(View.VISIBLE);
+        mTvQuizTitle.setText(getIntent().getExtras().getString("name"));
+        mTvQuizDescription.setText(getIntent().getExtras().getString("description"));
+        mFabStart.setEnabled(true);
+
     }
 
     public void enableStartButton() {
@@ -93,8 +94,7 @@ public class TestDetailsActivity extends AppCompatActivity implements View.OnCli
     }
 
     public void showInvalidInput() {
-        Toast.makeText(this, getString(R.string.invalid_input_provided),
-                Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, getString(R.string.invalid_input_provided),Toast.LENGTH_SHORT).show();
         dismissView();
     }
 
@@ -108,9 +108,7 @@ public class TestDetailsActivity extends AppCompatActivity implements View.OnCli
         TestDetailsActivity.this.overridePendingTransition(R.anim.slide_out_down, R.anim.anim_nothing);
     }
 
-    /*public void setPresenter(QuizDetailsContract.Presenter presenter) {
-        this.mPresenter = presenter;
-    }*/
+
 
     public void showLoading() {
 
@@ -125,7 +123,7 @@ public class TestDetailsActivity extends AppCompatActivity implements View.OnCli
         switch (v.getId()) {
             case R.id.quiz_details_fab_start:
                 if (v.getVisibility() == View.VISIBLE) {
-                    mPresenter.startQuizClicked();
+                    startQuiz("python");
                 }
                 break;
             default:

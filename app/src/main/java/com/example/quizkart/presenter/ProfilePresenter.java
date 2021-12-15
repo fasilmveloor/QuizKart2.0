@@ -99,6 +99,6 @@ public class ProfilePresenter {
 
     public void destroy() {
 
-        this.mView = null;
+        //this.mView = null;
     }
 }

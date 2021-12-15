@@ -49,13 +49,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         holder.totalCategory.setText(String.valueOf(category.getQuestion()));
 
         // for image we need to add glide image fetching library from netwok
-
+        String description = category.getName() + "This is a programming langauge, it is used for varouse purposes, This test is comprise of "+ category.getQuestion();
         holder.categoryImage.setImageResource(R.drawable.business);
 
         holder.itemView.setOnClickListener(view -> {
             try{
                 Intent i = new Intent(view.getContext(), TestDetailsActivity.class);
                 i.putExtra("name", category.getName());
+                i.putExtra("description", description);
                 view.getContext().startActivity(i);
             }
             catch (Exception e){

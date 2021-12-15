@@ -121,7 +121,7 @@
                 android:elevation="0dp"
                 android:focusable="true"
                 android:src="@drawable/ic_play_arrow_black_24dp"
-                android:visibility="gone"
+
                 app:fabSize="normal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
