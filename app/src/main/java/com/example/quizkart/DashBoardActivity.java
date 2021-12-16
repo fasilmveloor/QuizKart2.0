@@ -6,6 +6,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
@@ -19,11 +21,14 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.quizkart.databinding.ActivityDashBoardBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class DashBoardActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityDashBoardBinding binding;
+    private FirebaseAuth mauth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +40,7 @@ public class DashBoardActivity extends AppCompatActivity {
         setSupportActionBar(binding.appBarDashBoard.toolbar);
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
+        mauth = FirebaseAuth.getInstance();
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -71,21 +77,22 @@ public class DashBoardActivity extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
     private void showSignOutAlert() {
+        FirebaseUser currentUser = mauth.getCurrentUser();
         new AlertDialog.Builder(this)
                 .setTitle(getResources().getString(R.string.sign_out_title))
                 .setMessage(getString(R.string.sign_out_message))
                 .setPositiveButton(getResources().getString(R.string.sign_out_ok), (dialog, which) -> {
                     try {
-                        ///if (currentUser != null)
-                        if(true)
+                        if (currentUser != null)
                         {
-                            Intent signInIntent = new Intent(this, LoginActivity.class);
-                            startActivity(signInIntent);
-                            this.finishAffinity();
+                            FirebaseAuth.getInstance().signOut();
+                            startActivity(new Intent(DashBoardActivity.this, LoginActivity.class));
+                            finishAffinity();
+
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
                 })
                 .setNegativeButton(getString(R.string.sign_out_cancel), (dialog, which) -> dialog.dismiss())
                 .create().show();

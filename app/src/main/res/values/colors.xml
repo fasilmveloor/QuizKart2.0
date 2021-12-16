@@ -22,4 +22,5 @@
     <color name="colorPrimary">#243447</color>
     <color name="color_green_deadline">#22C461</color>
     <color name="color_red_deadline">#DC1A2E</color>
+    <color name="colorPrimaryDark">#323846</color>
 </resources>

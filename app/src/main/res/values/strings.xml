@@ -99,4 +99,13 @@
     <string name="quiz_dismiss_confirmation_title">Quitting the quiz?</string>
     <string name="error_uploading_picture">Error while uploading profile picture. Please try again later.</string>
     <string name="profile_saved_successfully">Logged in successfully</string>
+    <string name="create_profile">CreateProfile</string>
+    <string name="enter_your_name">Enter your name</string>
+    <string name="enter_your_lastname">Enter your last name</string>
+    <string name="phone_number">Phone number</string>
+    <string name="enter_your_phone_number">Enter your phone number</string>
+    <string name="email_address">Email address</string>
+    <string name="ok">Ok</string>
+    <string name="profile">Profile</string>
+    <string name="log_out">Logout</string>
 </resources>
