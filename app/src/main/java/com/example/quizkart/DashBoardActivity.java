@@ -103,7 +103,7 @@ public class DashBoardActivity extends AppCompatActivity {
         startActivity(i);
     }
     public void moveToProfile(View view) {
-        Intent i = new Intent(this, UserProfileActivity.class);
+        Intent i = new Intent(this, ProfileActivity.class);
         startActivity(i);
     }
 }
