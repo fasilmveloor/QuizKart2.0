@@ -82,7 +82,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
             startActivity(new Intent(getApplicationContext(),LoginActivity.class));
         }
 
-        databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference = FirebaseDatabase.getInstance().getReference("userprofile");
         editTextName = activityEditProfileBinding.EditTextName;
         editTextSurname = activityEditProfileBinding.EditTextSurname;
         editTextPhoneNo = activityEditProfileBinding.EditTextPhoneNo;
@@ -125,7 +125,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                 Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.defavatar);
                 // openSelectProfilePictureDialog();
                 userInformation();
-                // sendUserData();
+                sendUserData();
                 finish();
                 startActivity(new Intent(EditProfileActivity.this, DashBoardActivity.class));
             }

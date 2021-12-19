@@ -50,7 +50,7 @@ public class ProfileActivity extends AppCompatActivity {
         View view = activityProfileBinding.getRoot();
         setContentView(view);
 
-        databaseReference = FirebaseDatabase.getInstance().getReference();
+
         profilePicImageView = activityProfileBinding.profilePicImageView;
         profileNameTextView = activityProfileBinding.profileNameTextView;
         profileSurnameTextView = activityProfileBinding.profileSurnameTextView;
@@ -58,7 +58,8 @@ public class ProfileActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
-        DatabaseReference databaseReference = firebaseDatabase.getReference(firebaseAuth.getUid());
+        //DatabaseReference databaseReference = firebaseDatabase.getReference(firebaseAuth.getUid());
+        databaseReference = FirebaseDatabase.getInstance().getReference("userprofile").child(firebaseAuth.getUid());
         storageReference = firebaseStorage.getReference();
 
         // Get the image stored on Firebase via "User id/Images/Profile Pic.jpg".
@@ -80,12 +81,16 @@ public class ProfileActivity extends AppCompatActivity {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange( DataSnapshot dataSnapshot) {
-                UserInformation userProfile = dataSnapshot.getValue(UserInformation.class);
-                profileNameTextView.setText(userProfile.getUserName());
-                profileSurnameTextView.setText(userProfile.getUserSurname());
-                profilePhonenoTextView.setText(userProfile.getUserPhoneno());
-                textViewemailname=(TextView)findViewById(R.id.textViewEmailAdress);
-                textViewemailname.setText(user.getEmail());
+                if(dataSnapshot.exists()) {
+                    UserInformation userProfile = dataSnapshot.getValue(UserInformation.class);
+                    profileNameTextView.setText(userProfile.getUserName());
+                    profileSurnameTextView.setText(userProfile.getUserSurname());
+                    profilePhonenoTextView.setText(userProfile.getUserPhoneno());
+                    textViewemailname = (TextView) findViewById(R.id.textViewEmailAdress);
+                    textViewemailname.setText(user.getEmail());
+                }
+                else
+                    Toast.makeText(getApplicationContext(), "Data is not exist", Toast.LENGTH_LONG).show();
             }
             @Override
             public void onCancelled( DatabaseError databaseError) {
