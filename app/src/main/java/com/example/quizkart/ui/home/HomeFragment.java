@@ -1,5 +1,8 @@
 package com.example.quizkart.ui.home;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,12 +38,17 @@ public class HomeFragment extends Fragment {
     private CategoryAdapter categoryAdapter;
     private List<Object> viewItems = new ArrayList<>();
     private RecyclerView.LayoutManager layoutManager;
+    private SharedPreferences sharedPref;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        sharedPref = this.getActivity().getPreferences(MODE_PRIVATE);
+        binding.usernameview.setText("Hey, "+sharedPref.getString("Firstname","").toString());
+
         layoutManager = new StaggeredGridLayoutManager(2, 1);
         binding.quizRecycler.setLayoutManager(layoutManager);
         binding.quizRecycler.setHasFixedSize(true);
