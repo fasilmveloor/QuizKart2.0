@@ -52,13 +52,13 @@ public class HomeFragment extends Fragment {
         layoutManager = new StaggeredGridLayoutManager(2, 1);
         binding.quizRecycler.setLayoutManager(layoutManager);
         binding.quizRecycler.setHasFixedSize(true);
-        addItemsFromJSON();
+        //addItemsFromJSON();
         categoryAdapter = new CategoryAdapter(this, viewItems);
         binding.quizRecycler.setAdapter(categoryAdapter);
         return root;
     }
 
-    private void addItemsFromJSON() {
+    /*private void addItemsFromJSON() {
         try{
             String jsonDataString = readJSONDataFromFile();
             JSONArray jsonArray = new JSONArray(jsonDataString);
@@ -73,7 +73,7 @@ public class HomeFragment extends Fragment {
         } catch (JSONException | IOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     private String readJSONDataFromFile() throws IOException{
         InputStream inputStream = null;
