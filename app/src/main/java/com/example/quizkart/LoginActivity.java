@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -12,18 +13,26 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 
+import com.example.quizkart.models.UserInformation;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.AuthResult;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import com.example.quizkart.databinding.ActivityLoginBinding;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
 
     private EditText emailTextView, passwordTextView;
     private Button Btn;
     private FirebaseAuth mAuth;
+    private DatabaseReference databaseReference;
+    SharedPreferences sharedPref;
 
 
     ActivityLoginBinding activityLoginBinding;
@@ -76,8 +85,33 @@ public class LoginActivity extends AppCompatActivity {
                                             Toast.LENGTH_LONG)
                                             .show();
 
+                                    databaseReference = FirebaseDatabase.getInstance().getReference("userprofile").child(mAuth.getUid());
 
 
+
+                                    databaseReference.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange( DataSnapshot dataSnapshot) {
+                                            if(dataSnapshot.exists()) {
+                                                UserInformation userProfile = dataSnapshot.getValue(UserInformation.class);
+                                                String varusername = userProfile.getUserName() + ' ' + userProfile.getUserSurname();
+                                                sharedPref = getPreferences(MODE_PRIVATE);
+                                                SharedPreferences.Editor editor = sharedPref.edit();
+                                                editor.putString("Email", mAuth.getCurrentUser().getEmail().toString());
+                                                editor.putString("Firstname", userProfile.getUserName().toString());
+                                                Toast.makeText(getApplicationContext(), userProfile.getUserName().toString(), Toast.LENGTH_LONG).show();
+                                                editor.putString("Lastname", userProfile.getUserSurname());
+                                                editor.putString("phoneno", userProfile.getUserPhoneno());
+                                                editor.commit();
+                                            }
+                                            else
+                                                Toast.makeText(getApplicationContext(), "Data is not exist", Toast.LENGTH_LONG).show();
+                                        }
+                                        @Override
+                                        public void onCancelled( DatabaseError databaseError) {
+                                            Toast.makeText(LoginActivity.this, databaseError.getCode(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
                                     // if sign-in is successful
                                     // intent to home activity
                                     startActivity(new Intent(LoginActivity.this, DashBoardActivity.class));

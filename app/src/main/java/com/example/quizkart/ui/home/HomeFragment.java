@@ -4,6 +4,8 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,11 @@ import com.example.quizkart.R;
 import com.example.quizkart.adapter.CategoryAdapter;
 import com.example.quizkart.databinding.FragmentHomeBinding;
 import com.example.quizkart.models.Category;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,9 +43,11 @@ public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
     private CategoryAdapter categoryAdapter;
-    private List<Object> viewItems = new ArrayList<>();
+    private List<Category> viewItems = new ArrayList<>();
     private RecyclerView.LayoutManager layoutManager;
     private SharedPreferences sharedPref;
+    private DatabaseReference databaseReference;
+    private FirebaseDatabase firebaseDatabase;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -48,32 +57,38 @@ public class HomeFragment extends Fragment {
 
         sharedPref = this.getActivity().getPreferences(MODE_PRIVATE);
         binding.usernameview.setText("Hey, "+sharedPref.getString("Firstname","").toString());
-
+        Toast.makeText(getActivity(), sharedPref.getString("Firstname","").toString(), Toast.LENGTH_LONG).show();
+        databaseReference = FirebaseDatabase.getInstance().getReference("categories");
         layoutManager = new StaggeredGridLayoutManager(2, 1);
         binding.quizRecycler.setLayoutManager(layoutManager);
         binding.quizRecycler.setHasFixedSize(true);
-        //addItemsFromJSON();
+
         categoryAdapter = new CategoryAdapter(this, viewItems);
         binding.quizRecycler.setAdapter(categoryAdapter);
+
+
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot dataSnapshot : snapshot.getChildren())
+                {
+                    Category category = dataSnapshot.getValue(Category.class);
+                    viewItems.add(category);
+                }
+                categoryAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
         return root;
     }
 
-    /*private void addItemsFromJSON() {
-        try{
-            String jsonDataString = readJSONDataFromFile();
-            JSONArray jsonArray = new JSONArray(jsonDataString);
-            for(int i=0; i<jsonArray.length(); ++i){
-                JSONObject itemObj = jsonArray.getJSONObject(i);
-                String name = itemObj.getString("name");
-                int question = itemObj.getInt("question");
-                int id = itemObj.getInt("id");
-                Category category = new Category(name,question,id);
-                viewItems.add(category);
-            }
-        } catch (JSONException | IOException e) {
-            e.printStackTrace();
-        }
-    }*/
+
 
     private String readJSONDataFromFile() throws IOException{
         InputStream inputStream = null;

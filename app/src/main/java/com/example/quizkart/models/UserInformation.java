@@ -23,4 +23,16 @@ public class UserInformation {
     public String getUserPhoneno() {
         return phoneno;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public void setPhoneno(String phoneno) {
+        this.phoneno = phoneno;
+    }
 }

@@ -89,7 +89,7 @@ public class TestDetailsActivity extends AppCompatActivity implements View.OnCli
 
     public void startQuiz(String quizId) {
         Intent attemptQuizIntent = new Intent(this, TestAttemptActivity.class);
-        attemptQuizIntent.putExtra(TestAttemptPresenter.KEY_QUIZ_ID, quizId);
+        attemptQuizIntent.putExtra("quiz_id", getIntent().getExtras().getString("name"));
         startActivity(attemptQuizIntent);
     }
 
