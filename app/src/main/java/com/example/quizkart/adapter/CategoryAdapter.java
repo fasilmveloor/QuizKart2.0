@@ -83,7 +83,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
             categoryImage = itemView.findViewById(R.id.quiz_image);
             categoryName = itemView.findViewById(R.id.quiz_name);
-            totalCategory = itemView.findViewById(R.id.quiz_questions);
+            //totalCategory = itemView.findViewById(R.id.quiz_questions);
 
 
         }
