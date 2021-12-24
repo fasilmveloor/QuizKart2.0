@@ -65,7 +65,7 @@
             <ScrollView
                 android:id="@+id/scrollview"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/quiz_details_scrollview_layout_height"
+                android:layout_height="@dimen/quiz_details_scrollview_layout_height_250dp"
                 android:layout_marginEnd="@dimen/margin_8"
                 android:layout_marginStart="@dimen/margin_8"
                 android:layout_marginTop="@dimen/margin_10"

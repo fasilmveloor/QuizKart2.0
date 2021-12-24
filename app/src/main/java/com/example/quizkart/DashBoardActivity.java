@@ -100,13 +100,6 @@ public class DashBoardActivity extends AppCompatActivity {
                     UserInformation userProfile = dataSnapshot.getValue(UserInformation.class);
                     String varusername = userProfile.getUserName() + ' ' + userProfile.getUserSurname();
                     username.setText(varusername);
-                    sharedPref = getPreferences(MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPref.edit();
-                    editor.putString("Email", mauth.getCurrentUser().getEmail());
-                    editor.putString("Firstname", userProfile.getUserName());
-                    editor.putString("Lastname", userProfile.getUserSurname());
-                    editor.putString("phoneno", userProfile.getUserPhoneno());
-                    editor.commit();
                 }
                 else
                     Toast.makeText(getApplicationContext(), "Data is not exist", Toast.LENGTH_LONG).show();
@@ -176,6 +169,7 @@ public class DashBoardActivity extends AppCompatActivity {
                     try {
                         if (currentUser != null)
                         {
+                            SharedPreferences sharedPref = getPreferences(MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPref.edit();
                             editor.clear();
                             editor.apply();

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -195,8 +196,30 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     public void navigateLogOut(View v){
-        FirebaseAuth.getInstance().signOut();
-        Intent inent = new Intent(this, LoginActivity.class);
-        startActivity(inent);
+
+
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        new AlertDialog.Builder(this)
+                .setTitle(getResources().getString(R.string.sign_out_title))
+                .setMessage(getString(R.string.sign_out_message))
+                .setPositiveButton(getResources().getString(R.string.sign_out_ok), (dialog, which) -> {
+                    try {
+                        if (currentUser != null)
+                        {
+                            SharedPreferences sharedPref = getPreferences(MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPref.edit();
+                            editor.clear();
+                            editor.apply();
+                            FirebaseAuth.getInstance().signOut();
+                            startActivity(new Intent(this, LoginActivity.class));
+                            finishAffinity();
+
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                })
+                .setNegativeButton(getString(R.string.sign_out_cancel), (dialog, which) -> dialog.dismiss())
+                .create().show();
     }
 }

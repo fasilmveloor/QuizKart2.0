@@ -2,15 +2,17 @@ package com.example.quizkart.models;
 
 public class Category {
 
-    private final String name;
-    private final int question;
-    private final String image;
-    private final String description;
+    private String name;
+    private int question;
+    private String url;
+    private String description;
 
-    public Category(String name, int question, String image, String description) {
+    public Category(){}
+
+    public Category(String name, int question, String url, String description) {
         this.name = name;
         this.question = question;
-        this.image = image;
+        this.url = url;
         this.description = description;
     }
 
@@ -22,8 +24,8 @@ public class Category {
         return question;
     }
 
-    public String getImage() {
-        return image;
+    public String getUrl() {
+        return url;
     }
 
     public String getDescription() {
