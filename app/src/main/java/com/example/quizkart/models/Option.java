@@ -5,78 +5,48 @@ import androidx.annotation.NonNull;
 import java.util.Objects;
 
 public class Option {
-    private String mDescription;
-
-    /**
-     * Since we are using the same model to store correct answers and scholar's answers, this field
-     * can represent either
-     */
-    private boolean mIsCorrect;
-
-    private String mRemarks;
-
-    /**
-     * This field should be used for storing key of realtime database snapshot, otherwise ignore it
-     */
+    private String description;
+    private boolean is_correct;
 
     public Option() {
-
     }
 
-    /**
-     * Copy constructor
-     *
-     * @param toClone Option object to be shallow copied
-     */
-    public Option(@NonNull Option toClone) {
-        mDescription = toClone.mDescription;
-        mIsCorrect = toClone.mIsCorrect;
-        mRemarks = toClone.mRemarks;
+    public Option(String description, boolean is_correct) {
+        this.description = description;
+        this.is_correct = is_correct;
+    }
+
+    public Option(Option value) {
+        this.description = value.description;
+        this.is_correct = value.is_correct;
     }
 
     public String getDescription() {
-
-        return mDescription;
+        return description;
     }
 
     public void setDescription(String description) {
-
-        mDescription = description;
+        this.description = description;
     }
 
-    public boolean isCorrect() {
-        return mIsCorrect;
+    public boolean isIs_correct() {
+        return is_correct;
     }
 
-
-    public void setIsCorrect(boolean isCorrect) {
-
-        mIsCorrect = isCorrect;
-    }
-
-    public String getRemarks() {
-
-        return mRemarks;
-    }
-
-    public void setRemarks(String remarks) {
-
-        mRemarks = remarks;
+    public void setIs_correct(boolean is_correct) {
+        this.is_correct = is_correct;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Option)) return false;
         Option option = (Option) o;
-        return mIsCorrect == option.mIsCorrect &&
-                Objects.equals(mDescription, option.mDescription) &&
-                Objects.equals(mRemarks, option.mRemarks);
+        return is_correct == option.is_correct && description.equals(option.description);
     }
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(mDescription, mIsCorrect, mRemarks);
+        return Objects.hash(description, is_correct);
     }
 }

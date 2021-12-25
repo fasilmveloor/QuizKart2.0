@@ -1,25 +1,34 @@
 package com.example.quizkart.models;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 public class Question {
 
-    private String mDescription;
+    private String question;
 
     private long mMarks;
 
-    private Map<String, Option> mOptions;
+    private HashMap<String, Option> mOptions;
 
-
-    private Map<String, String> mFiles;
-
-    private String mExtra;
 
 
     public Question() {
+    }
+
+    public Question(String question, long mMarks, HashMap<String, Option> mOptions) {
+        this.question = question;
+        this.mMarks = mMarks;
+        //this.mOptions = mOptions;
+
+        if (mOptions != null) {
+            HashMap<String, Option> options = new HashMap<>();
+            for (Map.Entry<String, Option> optionEntry : mOptions.entrySet()) {
+                options.put(optionEntry.getKey(), new Option(optionEntry.getValue()));
+            }
+            this.mOptions = options;
+        }
     }
 
     /**
@@ -27,21 +36,15 @@ public class Question {
      *
      * @param toClone Question object to be shallow copied
      */
-    public Question(Question toClone) {
-        mDescription = toClone.mDescription;
-        mMarks = toClone.mMarks;
-        mExtra = toClone.mExtra;
 
-        if (toClone.mFiles != null) {
-            Map<String, String> files = new HashMap<>();
-            for (Map.Entry<String, String> fileEntry : toClone.mFiles.entrySet()) {
-                files.put(fileEntry.getKey(), fileEntry.getValue());
-            }
-            mFiles = files;
-        }
+
+    public Question(Question toClone) {
+        question = toClone.question;
+        mMarks = 1;
+
 
         if (toClone.mOptions != null) {
-            Map<String, Option> options = new HashMap<>();
+            HashMap<String, Option> options = new HashMap<>();
             for (Map.Entry<String, Option> optionEntry : toClone.mOptions.entrySet()) {
                 options.put(optionEntry.getKey(), new Option(optionEntry.getValue()));
             }
@@ -49,14 +52,14 @@ public class Question {
         }
     }
 
-    public String getDescription() {
+    public String getQuestion() {
 
-        return mDescription;
+        return question;
     }
 
-    public void setDescription(String description) {
+    public void setQuestion(String question) {
 
-        mDescription = description;
+        this.question = question;
     }
 
     public long getMarks() {
@@ -70,36 +73,16 @@ public class Question {
         mMarks = marks;
     }
 
-    public Map<String, Option> getOptions() {
+    public HashMap<String, Option> getOptions() {
 
         return mOptions;
     }
 
-    public void setOptions(Map<String, Option> options) {
+    public void setOptions(HashMap<String, Option> options) {
 
         mOptions = options;
     }
 
-
-    public Map<String, String> getFiles() {
-
-        return mFiles;
-    }
-
-    public void setFiles(Map<String, String> files) {
-
-        this.mFiles = files;
-    }
-
-    public String getExtra() {
-
-        return mExtra;
-    }
-
-    public void setExtra(String extra) {
-
-        this.mExtra = extra;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -107,14 +90,14 @@ public class Question {
         if (o == null || getClass() != o.getClass()) return false;
         Question question = (Question) o;
         return mMarks == question.mMarks &&
-                Objects.equals(mDescription, question.mDescription) &&
+                Objects.equals(this.question, question.question) &&
                 Objects.equals(mOptions, question.mOptions) ;
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(mDescription, mMarks, mOptions);
+        return Objects.hash(question, mMarks, mOptions);
     }
 
     /**
@@ -123,7 +106,7 @@ public class Question {
     public void resetOptions() {
         if (mOptions != null) {
             for (Map.Entry<String, Option> optionEntry : mOptions.entrySet()) {
-                optionEntry.getValue().setIsCorrect(false);
+                optionEntry.getValue().setIs_correct(false);
             }
         }
     }
