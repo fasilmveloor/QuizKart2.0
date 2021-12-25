@@ -66,8 +66,6 @@ public class HomeFragment extends Fragment {
         categoryAdapter = new CategoryAdapter(this, viewItems);
         binding.quizRecycler.setAdapter(categoryAdapter);
 
-
-
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

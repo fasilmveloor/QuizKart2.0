@@ -205,6 +205,10 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
         // Move scroll view to top every time question is populated
         activityTestAttemptBinding.questionHierarchyHolder.fullScroll(ScrollView.FOCUS_UP);
         activityTestAttemptBinding.rgSingleChoiceHolder.setVisibility(View.VISIBLE);
+        if(activityTestAttemptBinding.rgSingleChoiceHolder.getChildCount() > 0) {
+            activityTestAttemptBinding.rgSingleChoiceHolder.removeAllViews();
+        }
+
         Map<String, Option> options = userAttempt.getOptions();
 
         int index = 0;
@@ -219,26 +223,26 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
                 // Since it is single choice question, reset everything before setting
                 if (isChecked) {
                     userAttempt.resetOptions();
-//                     option.getValue().setIsCorrect(true);
+                     option.getValue().setIs_correct(true);
                 }
             });
 
-//            radioButton.setChecked(singleOption.isCorrect());
+            radioButton.setChecked(singleOption.isIs_correct());
 
             // Review mode changes
             if (isReviewMode) {
                 radioButton.setEnabled(false);
                 Option correctOption = question.getOptions().get(option.getKey());
 
-//                if (singleOption.isCorrect()) {
- //                   radioButton.setTextColor(ContextCompat.getColor(this,
-   //                         R.color.color_red_deadline));
-                //}
+                if (singleOption.isIs_correct()) {
+                    radioButton.setTextColor(ContextCompat.getColor(this,
+                            R.color.color_red_deadline));
+                }
 
-//                if (correctOption.isCorrect()) {
-//                    radioButton.setTextColor(ContextCompat.getColor(this,
-//                            R.color.color_green_deadline));
-//                }
+                if (correctOption != null && correctOption.isIs_correct()) {
+                    radioButton.setTextColor(ContextCompat.getColor(this,
+                            R.color.color_green_deadline));
+                }
             }
 
             activityTestAttemptBinding.rgSingleChoiceHolder.addView(radioButton, index);
@@ -384,6 +388,7 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
             quizAttempted.setmPercentage((int) userPercentage);
             quizAttempted.setmQuizTitle(QUIZ_ID);
             quizAttempted.setmScore(userScore);
+            loadResultSummary(finalUserScore, maxMarks, userPercentage);
 
             /*mDataHandler.updateMyAttemptedQuizzes(quizAttempted, new DataHandler.Callback<Void>() {
                 @Override
@@ -425,9 +430,10 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
                     //Retrieving questions snapshots
                     HashMap<String, Question> questionHashMap = new HashMap<>();
                     int c=1;
-                    Toast.makeText(getApplicationContext(), "child count:"+snapshot.getChildrenCount(), Toast.LENGTH_SHORT).show();
                     for(DataSnapshot dataSnapshot:snapshot.getChildren()){
+                        //fetching question
                         String question = dataSnapshot.child("question").getValue(String.class);
+                        //fetching options
                         DataSnapshot options = dataSnapshot.child("options");
                         HashMap<String, Option> optionHashMap= new HashMap<>();
                         for(int i=1; i<=4; i++){
@@ -435,6 +441,7 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
                             optionHashMap.put("option"+i, op);
                         }
                         questionHashMap.put("q"+c, new Question(question, 1, optionHashMap));
+                        c++;
                     }
                     Toast.makeText(getApplicationContext(), questionHashMap.toString(), Toast.LENGTH_SHORT).show();
                     QuizModel quiz = new QuizModel(QUIZ_ID, 15, questionHashMap, false);
