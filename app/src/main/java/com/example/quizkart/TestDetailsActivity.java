@@ -21,7 +21,7 @@ import java.util.Locale;
 
 public class TestDetailsActivity extends AppCompatActivity implements View.OnClickListener {
 
-    public static final String KEY_QUIZ_ID = "quiz_id";
+    public static String QUIZ_ID ;
     ActivityTestDetailsBinding activityTestDetailsBinding;
     private TextView mTvQuizTitle;
     private TextView mTvQuizDescription;
@@ -33,7 +33,7 @@ public class TestDetailsActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String value = getIntent().getStringExtra("name");
+        QUIZ_ID = getIntent().getStringExtra("name");
         activityTestDetailsBinding = ActivityTestDetailsBinding.inflate(getLayoutInflater());
         View view = activityTestDetailsBinding.getRoot();
         setContentView(view);

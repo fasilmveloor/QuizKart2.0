@@ -21,8 +21,19 @@ import android.widget.Toast;
 import com.example.quizkart.databinding.ActivityTestAttemptBinding;
 import com.example.quizkart.models.Option;
 import com.example.quizkart.models.Question;
+import com.example.quizkart.models.Quiz;
+import com.example.quizkart.models.QuizAttempted;
+import com.example.quizkart.models.QuizModel;
 import com.example.quizkart.presenter.TestAttemptPresenter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -30,9 +41,20 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
 
     private Question mCurrentQuestion;
     private boolean mIsEvaluated;
+    public static String QUIZ_ID;
+
+    private int mPointer = 0;
+    private QuizModel mSelectedQuiz;
+
+
+
+    private List<Question> mQuestions;
+    private List<Question> mUserAttempts;
+    private boolean isQuizDisplayed = false;
+    private DatabaseReference databaseReference;
 
     ActivityTestAttemptBinding activityTestAttemptBinding;
-    TestAttemptPresenter mPresenter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +62,7 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
         activityTestAttemptBinding = ActivityTestAttemptBinding.inflate(getLayoutInflater());
         View view = activityTestAttemptBinding.getRoot();
         setContentView(view);
-        mPresenter.start(getIntent().getExtras());
+        start(getIntent().getExtras());
 
         setSupportActionBar(activityTestAttemptBinding.toolbarAttemptQuiz);
 
@@ -115,7 +137,7 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
                 .setTitle(R.string.quiz_summary_msg)
                 .setCancelable(false)
                 .setPositiveButton(R.string.quiz_review_confirmation, (dialog, which) -> {
-                    mPresenter.onReviewClicked();
+                    onReviewClicked();
                     dialog.dismiss();
                 })
                 .setNegativeButton(R.string.user_confirmation_cancel, (dialog, which) -> {
@@ -143,7 +165,7 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
                 .setTitle(R.string.quiz_submit_confirmation_title)
                 .setCancelable(true)
                 .setPositiveButton(R.string.user_confirmation_yes, (dialog, which) -> {
-                    mPresenter.onSubmitClicked();
+                    onSubmitClicked();
                     mIsEvaluated = true;
                 })
                 .setNegativeButton(R.string.user_confirmation_cancel, (dialog, which) -> dialog.dismiss())
@@ -167,7 +189,7 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
     private void populateQuestionDetails(@NonNull Question userAttempt, @Nullable Question question) {
 
         activityTestAttemptBinding.tvQuestionDescription.setText(String.format(Locale.getDefault(), "%s [%d marks]"
-                , userAttempt.getDescription(), userAttempt.getMarks()));
+                , userAttempt.getQuestion(), userAttempt.getMarks()));
 
 
 
@@ -197,26 +219,26 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
                 // Since it is single choice question, reset everything before setting
                 if (isChecked) {
                     userAttempt.resetOptions();
-                    option.getValue().setIsCorrect(true);
+//                     option.getValue().setIsCorrect(true);
                 }
             });
 
-            radioButton.setChecked(singleOption.isCorrect());
+//            radioButton.setChecked(singleOption.isCorrect());
 
             // Review mode changes
             if (isReviewMode) {
                 radioButton.setEnabled(false);
                 Option correctOption = question.getOptions().get(option.getKey());
 
-                if (singleOption.isCorrect()) {
-                    radioButton.setTextColor(ContextCompat.getColor(this,
-                            R.color.color_red_deadline));
-                }
+//                if (singleOption.isCorrect()) {
+ //                   radioButton.setTextColor(ContextCompat.getColor(this,
+   //                         R.color.color_red_deadline));
+                //}
 
-                if (correctOption.isCorrect()) {
-                    radioButton.setTextColor(ContextCompat.getColor(this,
-                            R.color.color_green_deadline));
-                }
+//                if (correctOption.isCorrect()) {
+//                    radioButton.setTextColor(ContextCompat.getColor(this,
+//                            R.color.color_green_deadline));
+//                }
             }
 
             activityTestAttemptBinding.rgSingleChoiceHolder.addView(radioButton, index);
@@ -239,10 +261,10 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.img_quiz_attempt_next:
-                mPresenter.onNextClicked();
+                onNextClicked();
                 break;
             case R.id.img_quiz_attempt_previous:
-                mPresenter.onPreviousClicked();
+                onPreviousClicked();
                 break;
             default:
                 break;
@@ -275,6 +297,193 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
         } catch (NullPointerException npe) {
             npe.printStackTrace();
         }
+    }
+
+    public void onNextClicked() {
+
+        if (mPointer < mQuestions.size()) {
+
+            if (mPointer == (mQuestions.size() - 1)) {
+                // Last question reached. Submit button clicked
+                if (!mIsEvaluated) {
+                    showSubmitConfirmation();
+                } else {
+                    dismissView();
+                }
+            } else {
+
+                mPointer++;
+
+                if (!mIsEvaluated) {
+                    loadQuestion(mUserAttempts.get(mPointer));
+                } else {
+                    loadQuestionForReview(mUserAttempts.get(mPointer), mQuestions.get(mPointer));
+                }
+
+                // Last question reached, show submit button
+                if (mPointer == (mQuestions.size() - 1)) {
+                    showSubmitButton();
+                }
+
+            }
+            enablePreviousButton();
+            updateQuestionStatus();
+        }
+    }
+
+    public void onReviewClicked() {
+        mIsEvaluated = true;
+        mPointer = 0;
+        disablePreviousButton();
+        loadQuestionForReview(mQuestions.get(mPointer), mUserAttempts.get(mPointer));
+        disablePreviousButton();
+        showNextButton();
+        updateQuestionStatus();
+    }
+
+    public void onPreviousClicked() {
+        if (mPointer > 0) {
+            // First question
+            mPointer--;
+
+            if (!mIsEvaluated) {
+                loadQuestion(mUserAttempts.get(mPointer));
+            } else {
+                loadQuestionForReview(mQuestions.get(mPointer), mUserAttempts.get(mPointer));
+            }
+
+            if (mPointer == 0) {
+                disablePreviousButton();
+            }
+
+            showNextButton();
+            updateQuestionStatus();
+        }
+    }
+
+    public void onSubmitClicked() {
+        if (!mIsEvaluated) {
+
+            int maxMarks = mSelectedQuiz.getMarks();
+
+            int userScore = 0;
+
+            // Evaluating user's score based on performance
+            for (Question userAttempt : mUserAttempts) {
+                if (mQuestions.contains(userAttempt)) {
+                    userScore += userAttempt.getMarks();
+                }
+            }
+
+            int finalUserScore = userScore;
+
+            double userPercentage = 100 * (((double) finalUserScore) / maxMarks);
+
+            QuizAttempted quizAttempted = new QuizAttempted();
+            quizAttempted.setmMaxMarks(maxMarks);
+            quizAttempted.setmPercentage((int) userPercentage);
+            quizAttempted.setmQuizTitle(QUIZ_ID);
+            quizAttempted.setmScore(userScore);
+
+            /*mDataHandler.updateMyAttemptedQuizzes(quizAttempted, new DataHandler.Callback<Void>() {
+                @Override
+                public void onResponse(Void result) {
+                    loadResultSummary(finalUserScore, maxMarks, userPercentage);
+                }
+
+                @Override
+                public void onError() {
+                    showError();
+                }
+            });*/
+
+        } else {
+            dismissView();
+        }
+    }
+
+    public void start(@Nullable Bundle extras) {
+
+        if (extras == null || !extras.containsKey("quiz_id")) {
+            showInvalidInput();
+            return;
+        }
+
+        QUIZ_ID = extras.getString("quiz_id");
+
+        showLoading();
+        fetchQuizById(QUIZ_ID);
+
+    }
+
+    private void fetchQuizById(String quizId) {
+        databaseReference = FirebaseDatabase.getInstance().getReference("questions").child(quizId);
+        try {
+            databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    //Retrieving questions snapshots
+                    HashMap<String, Question> questionHashMap = new HashMap<>();
+                    int c=1;
+                    Toast.makeText(getApplicationContext(), "child count:"+snapshot.getChildrenCount(), Toast.LENGTH_SHORT).show();
+                    for(DataSnapshot dataSnapshot:snapshot.getChildren()){
+                        String question = dataSnapshot.child("question").getValue(String.class);
+                        DataSnapshot options = dataSnapshot.child("options");
+                        HashMap<String, Option> optionHashMap= new HashMap<>();
+                        for(int i=1; i<=4; i++){
+                            Option op = options.child("option"+i).getValue(Option.class);
+                            optionHashMap.put("option"+i, op);
+                        }
+                        questionHashMap.put("q"+c, new Question(question, 1, optionHashMap));
+                    }
+                    Toast.makeText(getApplicationContext(), questionHashMap.toString(), Toast.LENGTH_SHORT).show();
+                    QuizModel quiz = new QuizModel(QUIZ_ID, 15, questionHashMap, false);
+                    if(!isQuizDisplayed)
+                    {
+                        displayQuiz(quiz);
+                        isQuizDisplayed = true;
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    showError();
+
+
+                }
+            });
+        }catch (Exception e)
+        {
+            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void displayQuiz(QuizModel currentQuiz) {
+        mSelectedQuiz = currentQuiz;
+        mQuestions = new ArrayList<>(mSelectedQuiz.getQuestions().values());
+        mUserAttempts = new ArrayList<>();
+        //mUserAttempts = (List<Question>) (new ArrayList<>(mSelectedQuiz.getmQuestions().values())).clone();
+
+        // Clear all is-correct flags from user attempts, it will be used to store user's answers
+        for (Question question : mQuestions) {
+            Question copyQuestion = new Question(question);
+            copyQuestion.resetOptions();
+            mUserAttempts.add(copyQuestion);
+        }
+
+        // Since we are currently in first question
+        disablePreviousButton();
+
+        loadQuestion(mUserAttempts.get(mPointer));
+
+        loadTitle(QUIZ_ID);
+    }
+
+
+
+    private void updateQuestionStatus() {
+        loadAttemptedStatusText(mPointer + 1, mQuestions.size());
     }
 
 }
