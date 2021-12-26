@@ -9,13 +9,17 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.quizkart.databinding.ActivityTestAttemptBinding;
@@ -131,21 +135,47 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
     }
 
     public void loadResultSummary(int score, int total, double percentage) {
-        new AlertDialog.Builder(this)
-                .setMessage(String.format(Locale.getDefault(), "You've got %d out of %d. " +
-                        "You have scored %.2f%%", score, total, (float) percentage))
-                .setTitle(R.string.quiz_summary_msg)
-                .setCancelable(false)
-                .setPositiveButton(R.string.quiz_review_confirmation, (dialog, which) -> {
-                    onReviewClicked();
-                    dialog.dismiss();
-                })
-                .setNegativeButton(R.string.user_confirmation_cancel, (dialog, which) -> {
-                    dialog.dismiss();
-                    dismissView();
-                })
-                .create()
-                .show();
+        LayoutInflater inflater = getLayoutInflater();
+        View summarylayout = inflater.inflate(R.layout.layout_custom_dialog_confirmation, null);
+        TextView scoreview = summarylayout.findViewById(R.id.score);
+        ImageView result = summarylayout.findViewById(R.id.certificate);
+        Button cancel = summarylayout.findViewById(R.id.cancel_button);
+        Button review = summarylayout.findViewById(R.id.review);
+        AlertDialog.Builder summary = new AlertDialog.Builder(this);
+        summary.setView(summarylayout);
+        summary.setTitle("Congratulation");
+        summary.setPositiveButton(R.string.quiz_review_confirmation, (dialog, which) -> {
+            onReviewClicked();
+            dialog.dismiss();
+        });
+        summary.setCancelable(false);
+        summary.setNegativeButton(R.string.user_confirmation_cancel, (dialog, which) -> {
+            dialog.dismiss();
+            dismissView();
+        });
+
+        String msg = "You've successfully completed this test.";
+        String scoresummary = String.format(Locale.getDefault(), "You've got %d out of %d. " +
+                "You have scored %.2f%%.", score, total, (float) percentage);
+        String finalmessage = "";
+        Bitmap certificate;
+        if(percentage > 80.0) {
+            finalmessage = "you received a sharable certificate for your acheivement shown below, you can download it now by clicking the download button below";
+            certificate = generateCertificate(QUIZ_ID,"Atif Ansari",percentage);
+            result.setImageBitmap(certificate);
+        }
+        else{
+            finalmessage = "sorry, you didn't earn certificate .";
+            result.setImageResource(R.drawable._40_f_259711304_6uy6edpbqhmmptfwcluf2hpojscklxoi);
+        }
+        scoreview.setText(msg+scoresummary+finalmessage);
+
+        AlertDialog dialog = summary.create();
+        dialog.show();
+    }
+
+    private Bitmap generateCertificate(String quizId, String name, double percentage) {
+        return null;
     }
 
     public void showError() {
@@ -443,7 +473,6 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
                         questionHashMap.put("q"+c, new Question(question, 1, optionHashMap));
                         c++;
                     }
-                    Toast.makeText(getApplicationContext(), questionHashMap.toString(), Toast.LENGTH_SHORT).show();
                     QuizModel quiz = new QuizModel(QUIZ_ID, 15, questionHashMap, false);
                     if(!isQuizDisplayed)
                     {
