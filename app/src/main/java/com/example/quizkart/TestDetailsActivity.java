@@ -6,14 +6,11 @@ import androidx.appcompat.content.res.AppCompatResources;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.quizkart.databinding.ActivityTestDetailsBinding;
-import com.example.quizkart.presenter.TestAttemptPresenter;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 

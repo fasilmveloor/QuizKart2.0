@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.ScrollView;
@@ -25,10 +24,8 @@ import android.widget.Toast;
 import com.example.quizkart.databinding.ActivityTestAttemptBinding;
 import com.example.quizkart.models.Option;
 import com.example.quizkart.models.Question;
-import com.example.quizkart.models.Quiz;
 import com.example.quizkart.models.QuizAttempted;
 import com.example.quizkart.models.QuizModel;
-import com.example.quizkart.presenter.TestAttemptPresenter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -139,8 +136,6 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
         View summarylayout = inflater.inflate(R.layout.layout_custom_dialog_confirmation, null);
         TextView scoreview = summarylayout.findViewById(R.id.score);
         ImageView result = summarylayout.findViewById(R.id.certificate);
-        Button cancel = summarylayout.findViewById(R.id.cancel_button);
-        Button review = summarylayout.findViewById(R.id.review);
         AlertDialog.Builder summary = new AlertDialog.Builder(this);
         summary.setView(summarylayout);
         summary.setTitle("Congratulation");
@@ -420,17 +415,6 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
             quizAttempted.setmScore(userScore);
             loadResultSummary(finalUserScore, maxMarks, userPercentage);
 
-            /*mDataHandler.updateMyAttemptedQuizzes(quizAttempted, new DataHandler.Callback<Void>() {
-                @Override
-                public void onResponse(Void result) {
-                    loadResultSummary(finalUserScore, maxMarks, userPercentage);
-                }
-
-                @Override
-                public void onError() {
-                    showError();
-                }
-            });*/
 
         } else {
             dismissView();

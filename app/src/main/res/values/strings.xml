@@ -108,4 +108,5 @@
     <string name="ok">Ok</string>
     <string name="profile">Profile</string>
     <string name="log_out">Logout</string>
+    <string name="menu_achievements">Acheievements</string>
 </resources>
