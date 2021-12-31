@@ -10,6 +10,14 @@ import androidx.core.content.ContextCompat;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -26,13 +34,23 @@ import com.example.quizkart.models.Option;
 import com.example.quizkart.models.Question;
 import com.example.quizkart.models.QuizAttempted;
 import com.example.quizkart.models.QuizModel;
+import com.example.quizkart.models.QuizResult;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -53,6 +71,7 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
     private List<Question> mUserAttempts;
     private boolean isQuizDisplayed = false;
     private DatabaseReference databaseReference;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     ActivityTestAttemptBinding activityTestAttemptBinding;
 
@@ -153,10 +172,9 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
         String scoresummary = String.format(Locale.getDefault(), "You've got %d out of %d. " +
                 "You have scored %.2f%%.", score, total, (float) percentage);
         String finalmessage = "";
-        Bitmap certificate;
+
         if(percentage > 80.0) {
             finalmessage = "you received a sharable certificate for your acheivement shown below, you can download it now by clicking the download button below";
-            certificate = generateCertificate(QUIZ_ID,"Atif Ansari",percentage);
 
         }
         else{
@@ -169,9 +187,6 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
         dialog.show();
     }
 
-    private Bitmap generateCertificate(String quizId, String name, double percentage) {
-        return null;
-    }
 
     public void showError() {
         Toast.makeText(this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT)
@@ -413,12 +428,83 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
             quizAttempted.setmPercentage((int) userPercentage);
             quizAttempted.setmQuizTitle(QUIZ_ID);
             quizAttempted.setmScore(userScore);
+
+            DatabaseReference db = FirebaseDatabase.getInstance().getReference("result").child(mAuth.getUid());
+            String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+
+            if(userPercentage > 80.0) {
+                BitmapDrawable certificate = generateCertificate(QUIZ_ID, "Atif Ansari", currentDate);
+                Bitmap bitmap = certificate.getBitmap();
+                ByteArrayOutputStream cert = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, cert);
+                byte[] data = cert.toByteArray();
+                StorageReference storageReference = FirebaseStorage.getInstance().getReference(mAuth.getUid());
+                StorageReference certificatestore = storageReference.child("certificates").child(QUIZ_ID);
+                UploadTask uploadTask = certificatestore.putBytes(data);
+                uploadTask.addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(TestAttemptActivity.this, "Error: Uploading certificate picture", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Toast.makeText(TestAttemptActivity.this, "certificate uploaded", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            }
+
+            QuizResult quizResult = new QuizResult(QUIZ_ID, userScore, maxMarks, currentDate, "");
+            db.child(QUIZ_ID).setValue(quizResult);
             loadResultSummary(finalUserScore, maxMarks, userPercentage);
 
 
         } else {
             dismissView();
         }
+    }
+
+    private BitmapDrawable generateCertificate(String quizId, String name, String date) {
+
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.cartificate)
+                .copy(Bitmap.Config.ARGB_8888, true);
+
+        Typeface tf = Typeface.create("Helvetica", Typeface.BOLD);
+
+        Paint paint = new Paint();
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(Color.BLACK);
+
+        paint.setTypeface(tf);
+        paint.setTextAlign(Paint.Align.CENTER);
+        paint.setTextSize(convertToPixels(this, 44));
+
+        Rect textRect = new Rect();
+        paint.getTextBounds(name, 0, name.length(), textRect);
+
+        Canvas canvas = new Canvas(bm);
+
+        if(textRect.width() >= (canvas.getWidth() - 4)) {
+            paint.setTextSize(convertToPixels(this, 44));
+        }
+        int xPos = (canvas.getWidth() / 2) - 2;
+        int yPos = (int) ((canvas.getHeight() / 2) - ((paint.descent() + paint.ascent()) / 2)) ;
+        canvas.drawText(name, 414, 678, paint);
+        canvas.drawText(quizId, 752, 830, paint);
+        canvas.drawText(date, 192, 1042, paint);
+
+        return new BitmapDrawable(getResources(), bm);
+
+
+    }
+
+    public static int convertToPixels(Context context, int nDP)
+    {
+        final float conversionScale = context.getResources().getDisplayMetrics().density;
+
+        return (int) ((nDP * conversionScale) + 0.5f) ;
+
     }
 
     public void start(@Nullable Bundle extras) {
