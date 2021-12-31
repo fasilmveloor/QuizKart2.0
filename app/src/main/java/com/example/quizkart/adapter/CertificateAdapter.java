@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -35,7 +36,7 @@ public class CertificateAdapter extends RecyclerView.Adapter<CertificateAdapter.
     List<QuizResult> resultList;
     private CertificateFragment context;
 
-    public CertificateAdapter(CertificateFragment context,List<QuizResult> resultList) { ;
+    public CertificateAdapter(FragmentActivity context, List<QuizResult> resultList) { ;
         this.context = context;
         this.resultList = resultList;
     }

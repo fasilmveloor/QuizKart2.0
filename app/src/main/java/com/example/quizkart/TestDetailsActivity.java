@@ -58,7 +58,7 @@ public class TestDetailsActivity extends AppCompatActivity implements View.OnCli
         }
         mTvQuizTitle = activityTestDetailsBinding.quizDetailsLabelQuiz;
         mTvQuizDescription = activityTestDetailsBinding.quizDetailsLabelAbout;
-        mTvQuizAttemptedStatus = activityTestDetailsBinding.quizDetailsLabelAbout;
+        mTvQuizAttemptedStatus = activityTestDetailsBinding.quizDetailsLabelStatus;
         mFabStart = findViewById(R.id.quiz_details_fab_start);
         mFabStart.setOnClickListener(this);
     }

@@ -4,8 +4,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import com.example.quizkart.DashBoardActivity;
-import com.example.quizkart.LoginActivity;
-import com.example.quizkart.R;
+
 import com.example.quizkart.adapter.CategoryAdapter;
 import com.example.quizkart.databinding.FragmentHomeBinding;
 import com.example.quizkart.models.Category;
@@ -30,14 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +40,6 @@ public class HomeFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     private SharedPreferences sharedPref;
     private DatabaseReference databaseReference;
-    private FirebaseDatabase firebaseDatabase;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
