@@ -7,6 +7,7 @@ import androidx.appcompat.content.res.AppCompatResources;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -150,11 +151,21 @@ public class TestDetailsActivity extends AppCompatActivity implements View.OnCli
                     startQuiz();
                 }
                 break;
-            case android.R.id.home:
-                dismissView();
             default:
                 break;
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                dismissView();
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 
