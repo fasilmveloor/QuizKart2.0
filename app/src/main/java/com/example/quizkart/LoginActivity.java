@@ -85,33 +85,8 @@ public class LoginActivity extends AppCompatActivity {
                                             Toast.LENGTH_LONG)
                                             .show();
 
-                                    databaseReference = FirebaseDatabase.getInstance().getReference("userprofile").child(mAuth.getUid());
 
 
-
-                                    databaseReference.addValueEventListener(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange( DataSnapshot dataSnapshot) {
-                                            if(dataSnapshot.exists()) {
-                                                UserInformation userProfile = dataSnapshot.getValue(UserInformation.class);
-                                                String varusername = userProfile.getUserName() + ' ' + userProfile.getUserSurname();
-//                                                sharedPref = getPreferences(MODE_PRIVATE);
-//                                                SharedPreferences.Editor editor = sharedPref.edit();
-//                                                editor.putString("Email", mAuth.getCurrentUser().getEmail().toString());
-//                                                editor.putString("Firstname", userProfile.getUserName().toString());
-//                                                Toast.makeText(getApplicationContext(), userProfile.getUserName().toString(), Toast.LENGTH_LONG).show();
-//                                                editor.putString("Lastname", userProfile.getUserSurname());
-//                                                editor.putString("phoneno", userProfile.getUserPhoneno());
-//                                                editor.commit();
-                                            }
-                                            else
-                                                Toast.makeText(getApplicationContext(), "Data is not exist", Toast.LENGTH_LONG).show();
-                                        }
-                                        @Override
-                                        public void onCancelled( DatabaseError databaseError) {
-                                            Toast.makeText(LoginActivity.this, databaseError.getCode(), Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
                                     // if sign-in is successful
                                     // intent to home activity
                                     startActivity(new Intent(LoginActivity.this, DashBoardActivity.class));

@@ -40,6 +40,9 @@ public class OnBoardingActivity extends AppCompatActivity {
             else {
                 Intent i = new Intent(OnBoardingActivity.this, LoginActivity.class);
                 startActivity(i);
+                this.overridePendingTransition(R.anim.slide_out_down, R.anim.anim_nothing);
+                finish();
+
             }
         }
     }

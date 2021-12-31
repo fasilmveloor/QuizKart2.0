@@ -115,13 +115,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         UserInformation userinformation = new UserInformation(name,surname,phoneno);
         FirebaseUser user = firebaseAuth.getCurrentUser();
         databaseReference.child(user.getUid()).setValue(userinformation);
-        SharedPreferences sharedPref = getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString("Email", user.getEmail());
-        editor.putString("Firstname", name);
-        editor.putString("Lastname", surname);
-        editor.putString("phoneno", phoneno);
-        editor.commit();
+
         Toast.makeText(getApplicationContext(),"User information updated",Toast.LENGTH_LONG).show();
     }
     @Override

@@ -17,10 +17,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.example.quizkart.DashBoardActivity;
+import com.example.quizkart.LoginActivity;
 import com.example.quizkart.R;
 import com.example.quizkart.adapter.CategoryAdapter;
 import com.example.quizkart.databinding.FragmentHomeBinding;
 import com.example.quizkart.models.Category;
+import com.example.quizkart.models.UserInformation;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -56,6 +59,7 @@ public class HomeFragment extends Fragment {
         View root = binding.getRoot();
 
         sharedPref = this.getActivity().getPreferences(MODE_PRIVATE);
+        setcredintails();
         binding.usernameview.setText("Hey, "+sharedPref.getString("Firstname","").toString());
         //Toast.makeText(getActivity(), sharedPref.getString("Firstname","").toString(), Toast.LENGTH_LONG).show();
         databaseReference = FirebaseDatabase.getInstance().getReference("categories");
@@ -86,8 +90,31 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
-
-
+    private void setcredintails() {
+        FirebaseAuth mauth = FirebaseAuth.getInstance();
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference("userprofile").child(mauth.getUid());
+        db.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange( DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()) {
+                    UserInformation userProfile = dataSnapshot.getValue(UserInformation.class);
+                    String varusername = userProfile.getUserName() + ' ' + userProfile.getUserSurname();
+                                                SharedPreferences.Editor editor = sharedPref.edit();
+                                                editor.putString("Email", mauth.getCurrentUser().getEmail().toString());
+                                                editor.putString("Firstname", userProfile.getUserName().toString());
+                                                editor.putString("Lastname", userProfile.getUserSurname());
+                                                editor.putString("phoneno", userProfile.getUserPhoneno());
+                                                editor.commit();
+                }
+                else
+                    Toast.makeText(getActivity(), "Data is not exist", Toast.LENGTH_LONG).show();
+            }
+            @Override
+            public void onCancelled( DatabaseError databaseError) {
+                Toast.makeText(getActivity(), databaseError.getCode(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
 
     @Override

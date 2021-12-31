@@ -110,7 +110,7 @@ public class DashBoardActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_certificate, R.id.nav_slideshow)
+                R.id.nav_home, R.id.nav_certificate, R.id.nav_aboutus)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_dash_board);
@@ -124,7 +124,7 @@ public class DashBoardActivity extends AppCompatActivity {
                 },
                 new int[] {
                         Color.BLACK,
-                        Color.RED
+                        Color.WHITE
                 }
         );
         navigationView.setItemTextColor(csl);

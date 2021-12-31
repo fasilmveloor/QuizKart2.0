@@ -1,4 +1,4 @@
-package com.example.quizkart.adapter;
+package com.example.quizkart.ui.aboutus;
 
 import android.os.Bundle;
 
