@@ -134,8 +134,8 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
     public void loadResultSummary(int score, int total, double percentage) {
         LayoutInflater inflater = getLayoutInflater();
         View summarylayout = inflater.inflate(R.layout.layout_custom_dialog_confirmation, null);
-        TextView scoreview = summarylayout.findViewById(R.id.score);
-        ImageView result = summarylayout.findViewById(R.id.certificate);
+        TextView scoreview = summarylayout.findViewById(R.id.score_text);
+
         AlertDialog.Builder summary = new AlertDialog.Builder(this);
         summary.setView(summarylayout);
         summary.setTitle("Congratulation");
@@ -157,11 +157,11 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
         if(percentage > 80.0) {
             finalmessage = "you received a sharable certificate for your acheivement shown below, you can download it now by clicking the download button below";
             certificate = generateCertificate(QUIZ_ID,"Atif Ansari",percentage);
-            result.setImageBitmap(certificate);
+
         }
         else{
             finalmessage = "sorry, you didn't earn certificate .";
-            result.setImageResource(R.drawable._40_f_259711304_6uy6edpbqhmmptfwcluf2hpojscklxoi);
+
         }
         scoreview.setText(msg+scoresummary+finalmessage);
 

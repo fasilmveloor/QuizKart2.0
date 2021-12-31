@@ -109,4 +109,8 @@
     <string name="profile">Profile</string>
     <string name="log_out">Logout</string>
     <string name="menu_achievements">Acheievements</string>
+    <string name="pass_msg">To Pass: 80% or higher</string>
+    <string name="nocertificate">there is no certificate you earned, please attend a quiz and earn a certificate</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

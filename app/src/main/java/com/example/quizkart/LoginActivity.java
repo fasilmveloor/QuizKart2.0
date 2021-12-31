@@ -95,14 +95,14 @@ public class LoginActivity extends AppCompatActivity {
                                             if(dataSnapshot.exists()) {
                                                 UserInformation userProfile = dataSnapshot.getValue(UserInformation.class);
                                                 String varusername = userProfile.getUserName() + ' ' + userProfile.getUserSurname();
-                                                sharedPref = getPreferences(MODE_PRIVATE);
-                                                SharedPreferences.Editor editor = sharedPref.edit();
-                                                editor.putString("Email", mAuth.getCurrentUser().getEmail().toString());
-                                                editor.putString("Firstname", userProfile.getUserName().toString());
-                                                Toast.makeText(getApplicationContext(), userProfile.getUserName().toString(), Toast.LENGTH_LONG).show();
-                                                editor.putString("Lastname", userProfile.getUserSurname());
-                                                editor.putString("phoneno", userProfile.getUserPhoneno());
-                                                editor.commit();
+//                                                sharedPref = getPreferences(MODE_PRIVATE);
+//                                                SharedPreferences.Editor editor = sharedPref.edit();
+//                                                editor.putString("Email", mAuth.getCurrentUser().getEmail().toString());
+//                                                editor.putString("Firstname", userProfile.getUserName().toString());
+//                                                Toast.makeText(getApplicationContext(), userProfile.getUserName().toString(), Toast.LENGTH_LONG).show();
+//                                                editor.putString("Lastname", userProfile.getUserSurname());
+//                                                editor.putString("phoneno", userProfile.getUserPhoneno());
+//                                                editor.commit();
                                             }
                                             else
                                                 Toast.makeText(getApplicationContext(), "Data is not exist", Toast.LENGTH_LONG).show();

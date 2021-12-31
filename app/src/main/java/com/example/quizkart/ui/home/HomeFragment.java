@@ -57,7 +57,7 @@ public class HomeFragment extends Fragment {
 
         sharedPref = this.getActivity().getPreferences(MODE_PRIVATE);
         binding.usernameview.setText("Hey, "+sharedPref.getString("Firstname","").toString());
-        Toast.makeText(getActivity(), sharedPref.getString("Firstname","").toString(), Toast.LENGTH_LONG).show();
+        //Toast.makeText(getActivity(), sharedPref.getString("Firstname","").toString(), Toast.LENGTH_LONG).show();
         databaseReference = FirebaseDatabase.getInstance().getReference("categories");
         layoutManager = new StaggeredGridLayoutManager(2, 1);
         binding.quizRecycler.setLayoutManager(layoutManager);
@@ -88,23 +88,7 @@ public class HomeFragment extends Fragment {
 
 
 
-    private String readJSONDataFromFile() throws IOException{
-        InputStream inputStream = null;
-        StringBuilder builder = new StringBuilder();
-        try {
-            String jsonString = null;
-            inputStream = getResources().openRawResource(R.raw.categories);
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-            while((jsonString = bufferedReader.readLine()) != null)
-            {
-                builder.append(jsonString);
-            }
-        } finally {
-            if(inputStream != null)
-                inputStream.close();
-        }
-        return new String(builder);
-    }
+
 
     @Override
     public void onDestroyView() {
