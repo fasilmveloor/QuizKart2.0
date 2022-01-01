@@ -34,9 +34,9 @@ import java.util.Locale;
 
 public class CertificateAdapter extends RecyclerView.Adapter<CertificateAdapter.CategoryViewHolder> {
     List<QuizResult> resultList;
-    private CertificateFragment context;
+    private FragmentActivity context;
 
-    public CertificateAdapter(FragmentActivity context, List<QuizResult> resultList) { ;
+    public CertificateAdapter(FragmentActivity context, List<QuizResult> resultList) {
         this.context = context;
         this.resultList = resultList;
     }
@@ -61,7 +61,7 @@ public class CertificateAdapter extends RecyclerView.Adapter<CertificateAdapter.
         String score = Integer.toString(result.getScore());
         String maxMarks = Integer.toString(result.getMaxScore());
         // for image we need to add glide image fetching library from netwok
-        Glide.with(context.getActivity()).load(url).into(holder.quizImage);
+        Glide.with(context).load(url).into(holder.quizImage);
         holder.quizScore.setText(String.format(Locale.getDefault(), "%s / %s", score, maxMarks));
         holder.quizDate.setText(result.getDate());
         holder.itemView.setOnClickListener(view -> {
