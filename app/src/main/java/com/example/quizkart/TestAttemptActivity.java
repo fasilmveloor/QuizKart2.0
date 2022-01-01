@@ -152,9 +152,10 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
         LayoutInflater inflater = getLayoutInflater();
         View summarylayout = inflater.inflate(R.layout.layout_custom_dialog_confirmation, null);
         TextView scoreview = summarylayout.findViewById(R.id.score_text);
-        TextView lastscore = summarylayout.findViewById(R.id.last_attempted);
-        TextView grade = summarylayout.findViewById(R.id.grade);
 
+        TextView grade = summarylayout.findViewById(R.id.grade);
+        String msg;
+        
         AlertDialog.Builder summary = new AlertDialog.Builder(this);
         summary.setView(summarylayout);
         summary.setPositiveButton(R.string.quiz_review_confirmation, (dialog, which) -> {
@@ -167,15 +168,19 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
             dismissView();
         });
         grade.setText("Grade : " + Double.toString(percentage));
+        
         scoreview.setText(String.format(Locale.getDefault(), "Score : %s / %s", Integer.toString(score), Integer.toString(total)));
 
         if(percentage > 80.0) {
             summary.setTitle("Congratulation, You passed the test");
+            msg = "Congratulation, You earned a certificate, you can view and download certificate from achievements tab on the dashbnoard";
         }
         else{
             summary.setTitle("Sorry, You didn't earn required score");
+            msg = "Come again when you are ok";
         }
-
+        
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
 
         AlertDialog dialog = summary.create();
         dialog.show();
@@ -404,6 +409,7 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
 
             int maxMarks = mSelectedQuiz.getMarks();
 
+
             int userScore = 0;
             final String[] url = {""};
 
@@ -444,13 +450,12 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
                 }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Toast.makeText(TestAttemptActivity.this, "Congratulation, You earned a certificate, you can view and download certificate from achievements tab on the dashbnoard", Toast.LENGTH_SHORT).show();
+                        
                         url[0] = certificatestore.getDownloadUrl().toString();
                     }
                 });
 
             }
-
             QuizResult quizResult = new QuizResult(QUIZ_ID, userScore, maxMarks, currentDate, url[0]);
             db.child(QUIZ_ID).setValue(quizResult);
             loadResultSummary(finalUserScore, maxMarks, userPercentage);

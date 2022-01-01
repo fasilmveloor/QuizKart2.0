@@ -31,12 +31,5 @@
         android:layout_marginTop="@dimen/margin_8"
         android:text="Grade:" />
 
-    <TextView
-        android:id="@+id/last_attempted"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:layout_marginTop="@dimen/margin_8"
-        android:text="Grade: "/>
 
 </LinearLayout>
