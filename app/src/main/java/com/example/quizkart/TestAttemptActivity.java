@@ -9,6 +9,7 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -17,13 +18,12 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
-import android.media.Image;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -65,13 +65,11 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
     private int mPointer = 0;
     private QuizModel mSelectedQuiz;
 
-
-
     private List<Question> mQuestions;
     private List<Question> mUserAttempts;
     private boolean isQuizDisplayed = false;
     private DatabaseReference databaseReference;
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     ActivityTestAttemptBinding activityTestAttemptBinding;
 
@@ -154,10 +152,11 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
         LayoutInflater inflater = getLayoutInflater();
         View summarylayout = inflater.inflate(R.layout.layout_custom_dialog_confirmation, null);
         TextView scoreview = summarylayout.findViewById(R.id.score_text);
+        TextView lastscore = summarylayout.findViewById(R.id.last_attempted);
+        TextView grade = summarylayout.findViewById(R.id.grade);
 
         AlertDialog.Builder summary = new AlertDialog.Builder(this);
         summary.setView(summarylayout);
-        summary.setTitle("Congratulation");
         summary.setPositiveButton(R.string.quiz_review_confirmation, (dialog, which) -> {
             onReviewClicked();
             dialog.dismiss();
@@ -167,21 +166,16 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
             dialog.dismiss();
             dismissView();
         });
-
-        String msg = "You've successfully completed this test.";
-        String scoresummary = String.format(Locale.getDefault(), "You've got %d out of %d. " +
-                "You have scored %.2f%%.", score, total, (float) percentage);
-        String finalmessage = "";
+        grade.setText("Grade : " + Double.toString(percentage));
+        scoreview.setText(String.format(Locale.getDefault(), "Score : %s / %s", Integer.toString(score), Integer.toString(total)));
 
         if(percentage > 80.0) {
-            finalmessage = "you received a sharable certificate for your acheivement shown below, you can download it now by clicking the download button below";
-
+            summary.setTitle("Congratulation, You passed the test");
         }
         else{
-            finalmessage = "sorry, you didn't earn certificate .";
-
+            summary.setTitle("Sorry, You didn't earn required score");
         }
-        scoreview.setText(msg+scoresummary+finalmessage);
+
 
         AlertDialog dialog = summary.create();
         dialog.show();
@@ -411,6 +405,7 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
             int maxMarks = mSelectedQuiz.getMarks();
 
             int userScore = 0;
+            final String[] url = {""};
 
             // Evaluating user's score based on performance
             for (Question userAttempt : mUserAttempts) {
@@ -433,7 +428,7 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
             String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
 
             if(userPercentage > 80.0) {
-                BitmapDrawable certificate = generateCertificate(QUIZ_ID, "Atif Ansari", currentDate);
+                BitmapDrawable certificate = generateCertificate(QUIZ_ID, getusername(),currentDate);
                 Bitmap bitmap = certificate.getBitmap();
                 ByteArrayOutputStream cert = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, cert);
@@ -444,25 +439,34 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
                 uploadTask.addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(TestAttemptActivity.this, "Error: Uploading certificate picture", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TestAttemptActivity.this, "Error: something went wrong", Toast.LENGTH_SHORT).show();
                     }
                 }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Toast.makeText(TestAttemptActivity.this, "certificate uploaded", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TestAttemptActivity.this, "Congratulation, You earned a certificate, you can view and download certificate from achievements tab on the dashbnoard", Toast.LENGTH_SHORT).show();
+                        url[0] = certificatestore.getDownloadUrl().toString();
                     }
                 });
 
             }
 
-            QuizResult quizResult = new QuizResult(QUIZ_ID, userScore, maxMarks, currentDate, "");
+            QuizResult quizResult = new QuizResult(QUIZ_ID, userScore, maxMarks, currentDate, url[0]);
             db.child(QUIZ_ID).setValue(quizResult);
             loadResultSummary(finalUserScore, maxMarks, userPercentage);
-
 
         } else {
             dismissView();
         }
+    }
+
+    private String getusername() {
+        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        String firstname = sharedPreferences.getString("Firstname", "");
+        String lastname = sharedPreferences.getString("Lastname", "");
+        String username = firstname + " "+ lastname;
+        Toast.makeText(getApplicationContext(), username, Toast.LENGTH_LONG).show();
+        return username;
     }
 
     private BitmapDrawable generateCertificate(String quizId, String name, String date) {
@@ -471,28 +475,31 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
                 .copy(Bitmap.Config.ARGB_8888, true);
 
         Typeface tf = Typeface.create("Helvetica", Typeface.BOLD);
+        Typeface tfdate = Typeface.create("Helvetica", Typeface.BOLD_ITALIC);
 
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(Color.BLACK);
-
         paint.setTypeface(tf);
         paint.setTextAlign(Paint.Align.CENTER);
-        paint.setTextSize(convertToPixels(this, 44));
+        paint.setTextSize(convertToPixels(this, 150));
 
         Rect textRect = new Rect();
         paint.getTextBounds(name, 0, name.length(), textRect);
 
         Canvas canvas = new Canvas(bm);
 
-        if(textRect.width() >= (canvas.getWidth() - 4)) {
-            paint.setTextSize(convertToPixels(this, 44));
-        }
-        int xPos = (canvas.getWidth() / 2) - 2;
-        int yPos = (int) ((canvas.getHeight() / 2) - ((paint.descent() + paint.ascent()) / 2)) ;
-        canvas.drawText(name, 414, 678, paint);
-        canvas.drawText(quizId, 752, 830, paint);
-        canvas.drawText(date, 192, 1042, paint);
+        Paint paint1 = new Paint();
+        paint1.setStyle(Paint.Style.FILL);
+        paint1.setColor(Color.BLACK);
+        paint1.setTypeface(tfdate);
+        paint1.setTextAlign(Paint.Align.CENTER);
+        paint1.setTextSize(convertToPixels(this, 50));
+
+        canvas.drawText(name, 1750, 1390, paint);
+        paint.setTextSize(convertToPixels(this, 80));
+        canvas.drawText(quizId, 1750, 1700, paint);
+        canvas.drawText(date, 600, 2100, paint1);
 
         return new BitmapDrawable(getResources(), bm);
 

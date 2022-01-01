@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QuizKart">
         <activity
+            android:name=".CertificateViewActivity"
+            android:exported="false" />
+        <activity
             android:name=".ProfileActivity"
             android:exported="false" />
         <activity
@@ -25,7 +28,7 @@
         <activity
             android:name=".TestAttemptActivity"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
         <activity
             android:name=".UserProfileActivity"
             android:exported="false" />

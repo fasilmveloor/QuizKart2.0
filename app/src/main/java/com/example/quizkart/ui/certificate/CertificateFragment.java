@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.quizkart.R;
 import com.example.quizkart.adapter.CertificateAdapter;
@@ -59,17 +60,26 @@ public class CertificateFragment extends Fragment {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot dataSnapshot : snapshot.getChildren())
+                if(snapshot.getChildrenCount() > 0)
                 {
-                    QuizResult quizResult = dataSnapshot.getValue(QuizResult.class);
-                    certificateItems.add(quizResult);
+                    for(DataSnapshot dataSnapshot : snapshot.getChildren())
+                    {
+                        QuizResult quizResult = dataSnapshot.getValue(QuizResult.class);
+                        certificateItems.add(quizResult);
+                    }
+                    certificateAdapter.notifyDataSetChanged();
+                    binding.nocertificatemsg.setVisibility(View.GONE);
                 }
-                certificateAdapter.notifyDataSetChanged();
+                else {
+                    binding.certificateRecycler.setVisibility(View.GONE);
+                    binding.nocertificatemsg.setVisibility(View.VISIBLE);
+                }
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_LONG).show();
             }
         });
 

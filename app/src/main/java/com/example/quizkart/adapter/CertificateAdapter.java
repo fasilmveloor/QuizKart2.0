@@ -3,7 +3,6 @@ package com.example.quizkart.adapter;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,21 +19,19 @@ import com.example.quizkart.R;
 import com.example.quizkart.TestDetailsActivity;
 import com.example.quizkart.models.Category;
 import com.example.quizkart.models.QuizResult;
-import com.example.quizkart.ui.certificate.CertificateFragment;
-import com.example.quizkart.ui.home.HomeFragment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class CertificateAdapter extends RecyclerView.Adapter<CertificateAdapter.CategoryViewHolder> {
     List<QuizResult> resultList;
-    private FragmentActivity context;
+    private final FragmentActivity context;
 
     public CertificateAdapter(FragmentActivity context, List<QuizResult> resultList) {
         this.context = context;
@@ -55,7 +52,7 @@ public class CertificateAdapter extends RecyclerView.Adapter<CertificateAdapter.
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
 
         // here we will bind data in recyclerview ro items.
-        QuizResult result = (QuizResult) resultList.get(position);
+        QuizResult result = resultList.get(position);
         holder.quizName.setText(result.getQuizName());
         String url = getImageUrl(result.getQuizName());
         String score = Integer.toString(result.getScore());
@@ -89,7 +86,7 @@ public class CertificateAdapter extends RecyclerView.Adapter<CertificateAdapter.
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()) {
                     Category category = snapshot.getValue(Category.class);
-                    url[0] = category.getUrl();
+                    url[0] = Objects.requireNonNull(category).getUrl();
                 }
             }
 
