@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.quizkart.CertificateViewActivity;
 import com.example.quizkart.R;
 import com.example.quizkart.TestDetailsActivity;
 import com.example.quizkart.models.Category;
@@ -63,7 +64,7 @@ public class CertificateAdapter extends RecyclerView.Adapter<CertificateAdapter.
         holder.quizDate.setText(result.getDate());
         holder.itemView.setOnClickListener(view -> {
             try{
-                Intent i = new Intent(view.getContext(), TestDetailsActivity.class);
+                Intent i = new Intent(view.getContext(), CertificateViewActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("result", result);
                 i.putExtras(bundle);
