@@ -24,14 +24,6 @@
         android:text="Score_obtained:" />
 
     <TextView
-        android:id="@+id/total_score"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:layout_marginTop="@dimen/margin_8"
-        android:text="Total Score:" />
-
-    <TextView
         android:id="@+id/grade"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
