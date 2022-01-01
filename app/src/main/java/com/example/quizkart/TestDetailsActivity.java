@@ -100,6 +100,10 @@ public class TestDetailsActivity extends AppCompatActivity implements View.OnCli
                     String score = Integer.toString(quizResult.getScore());
                     String maxMarks = Integer.toString(quizResult.getMaxScore());
                     mTvQuizAttemptedStatus.setText(String.format(Locale.getDefault(), "%s / %s", score, maxMarks));
+                    double userPercentage = 100 * (((double) quizResult.getScore()) / quizResult.getMaxScore());
+                    if(userPercentage > 80.0) {
+
+                    }
                 }
             }
 
