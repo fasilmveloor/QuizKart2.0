@@ -35,6 +35,7 @@ import com.example.quizkart.models.Question;
 import com.example.quizkart.models.QuizAttempted;
 import com.example.quizkart.models.QuizModel;
 import com.example.quizkart.models.QuizResult;
+import com.example.quizkart.models.UserInformation;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -454,12 +455,28 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
     }
 
     private String getusername() {
-        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
-        String firstname = sharedPreferences.getString("Firstname", "");
-        String lastname = sharedPreferences.getString("Lastname", "");
-        String username = firstname + " "+ lastname;
-        Toast.makeText(getApplicationContext(), username, Toast.LENGTH_LONG).show();
-        return username;
+        final String[] username = new String[1];
+                DatabaseReference userprofile = FirebaseDatabase.getInstance().getReference("userprofile").child(mAuth.getUid());
+        userprofile.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()) {
+                    UserInformation user = snapshot.getValue(UserInformation.class);
+                    String firstname = user.getUserName();
+                    String lastname = user.getUserName();
+                    username[0] = firstname + " "+ lastname;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        String name1 = "hi" + username[0];
+
+        Toast.makeText(getApplicationContext(), name1, Toast.LENGTH_LONG).show();
+        return name1;
     }
 
     private Bitmap generateCertificate(String quizId, String name, String date) {
@@ -475,7 +492,7 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
         paint.setColor(Color.BLACK);
         paint.setTypeface(tf);
         paint.setTextAlign(Paint.Align.CENTER);
-        paint.setTextSize(convertToPixels( 150));
+        paint.setTextSize(convertToPixels( 110));
 
         Rect textRect = new Rect();
         paint.getTextBounds(name, 0, name.length(), textRect);
@@ -484,7 +501,7 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
 
 
 
-        canvas.drawText(name, 1750, 1390, paint);
+        canvas.drawText(name, 1700, 1390, paint);
         paint.setTextSize(convertToPixels( 80));
         canvas.drawText(quizId, 1750, 1700, paint);
         paint.setTextSize(convertToPixels( 50));
