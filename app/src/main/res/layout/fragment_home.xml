@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment"
+    android:background="@color/backgroundevent"
     android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
 
     <TextView
@@ -14,7 +15,7 @@
         android:layout_marginStart="18dp"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:fontFamily="@font/nunito_bold"
-        android:textColor="#0D1333"
+        android:textColor="@color/white"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -26,10 +27,10 @@
         android:layout_marginTop="16dp"
         android:fontFamily="@font/nunito_bold"
         android:text="Select a Quiz you want to play"
-        android:textColor="#61688b"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/usernameview"
-        app:layout_constraintTop_toBottomOf="@+id/usernameview" />
+        app:layout_constraintTop_toBottomOf="@+id/usernameview"
+        android:textColor="@color/white"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/quiz_recycler"

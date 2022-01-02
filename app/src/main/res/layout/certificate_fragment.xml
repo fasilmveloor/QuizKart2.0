@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.certificate.CertificateFragment"
-    android:background="@color/colorbg">
+    android:background="@color/backgroundevent">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/certificate_recycler"

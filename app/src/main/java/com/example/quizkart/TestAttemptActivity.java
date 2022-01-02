@@ -17,8 +17,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -434,26 +434,14 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
             String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
 
             if(userPercentage > 80.0) {
-                BitmapDrawable certificate = generateCertificate(QUIZ_ID, getusername(),currentDate);
-                Bitmap bitmap = certificate.getBitmap();
+                Bitmap bitmap = generateCertificate(QUIZ_ID, getusername(),currentDate);
                 ByteArrayOutputStream cert = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, cert);
                 byte[] data = cert.toByteArray();
                 StorageReference storageReference = FirebaseStorage.getInstance().getReference(mAuth.getUid());
                 StorageReference certificatestore = storageReference.child("certificates").child(QUIZ_ID);
                 UploadTask uploadTask = certificatestore.putBytes(data);
-                uploadTask.addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(TestAttemptActivity.this, "Error: something went wrong", Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        
-                        url[0] = certificatestore.getDownloadUrl().toString();
-                    }
-                });
+                uploadTask.addOnFailureListener(e -> Toast.makeText(TestAttemptActivity.this, "Error: something went wrong", Toast.LENGTH_SHORT).show()).addOnSuccessListener(taskSnapshot -> certificatestore.getDownloadUrl().addOnSuccessListener(uri -> url[0] = uri.toString()));
 
             }
             QuizResult quizResult = new QuizResult(QUIZ_ID, userScore, maxMarks, currentDate, url[0]);
@@ -474,7 +462,7 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
         return username;
     }
 
-    private BitmapDrawable generateCertificate(String quizId, String name, String date) {
+    private Bitmap generateCertificate(String quizId, String name, String date) {
 
         Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.cartificate)
                 .copy(Bitmap.Config.ARGB_8888, true);
@@ -487,33 +475,29 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
         paint.setColor(Color.BLACK);
         paint.setTypeface(tf);
         paint.setTextAlign(Paint.Align.CENTER);
-        paint.setTextSize(convertToPixels(this, 150));
+        paint.setTextSize(convertToPixels( 150));
 
         Rect textRect = new Rect();
         paint.getTextBounds(name, 0, name.length(), textRect);
 
         Canvas canvas = new Canvas(bm);
 
-        Paint paint1 = new Paint();
-        paint1.setStyle(Paint.Style.FILL);
-        paint1.setColor(Color.BLACK);
-        paint1.setTypeface(tfdate);
-        paint1.setTextAlign(Paint.Align.CENTER);
-        paint1.setTextSize(convertToPixels(this, 50));
+
 
         canvas.drawText(name, 1750, 1390, paint);
-        paint.setTextSize(convertToPixels(this, 80));
+        paint.setTextSize(convertToPixels( 80));
         canvas.drawText(quizId, 1750, 1700, paint);
-        canvas.drawText(date, 600, 2100, paint1);
+        paint.setTextSize(convertToPixels( 50));
+        canvas.drawText(date, 600, 2100, paint);
 
-        return new BitmapDrawable(getResources(), bm);
+        return bm;
 
 
     }
 
-    public static int convertToPixels(Context context, int nDP)
+    public int convertToPixels(int nDP)
     {
-        final float conversionScale = context.getResources().getDisplayMetrics().density;
+        final float conversionScale = getResources().getDisplayMetrics().density;
 
         return (int) ((nDP * conversionScale) + 0.5f) ;
 

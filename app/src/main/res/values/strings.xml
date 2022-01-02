@@ -114,4 +114,11 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="menu_aboutus">AboutUs</string>
+    <string name="text_version">Version : 1.0</string>
+    <string name="aboutapp">This app is created as a part of academic work of Skill enhancement course Android app development. This app is aim to provide skilltest for some essential skills in technology</string>
+    <string name="description1">Let\'s Test your technological knowledge</string>
+    <string name="description2">QuizKart have variouse Quizzes which test your knowledge in the technology domain</string>
+    <string name="description4">Let\'s start the journey to learn technology and earn technology</string>
+    <string name="finish">Finish</string>
+    <string name="description3">For each quiz you win, QuizKart will give you a certificate which you can share on the social media</string>
 </resources>

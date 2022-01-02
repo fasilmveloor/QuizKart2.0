@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +33,7 @@ public class TestDetailsActivity extends AppCompatActivity implements View.OnCli
     private TextView mTvQuizTitle;
     private TextView mTvQuizDescription;
     private TextView mTvQuizAttemptedStatus;
+    private Button viewCertificate;
     private FloatingActionButton mFabStart;
     private DatabaseReference databaseReference;
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -60,7 +62,9 @@ public class TestDetailsActivity extends AppCompatActivity implements View.OnCli
         mTvQuizDescription = activityTestDetailsBinding.quizDetailsLabelAbout;
         mTvQuizAttemptedStatus = activityTestDetailsBinding.quizDetailsLabelStatus;
         mFabStart = findViewById(R.id.quiz_details_fab_start);
+        viewCertificate = activityTestDetailsBinding.quizCertificateView;
         mFabStart.setOnClickListener(this);
+        viewCertificate.setOnClickListener(this);
     }
 
 
@@ -102,7 +106,13 @@ public class TestDetailsActivity extends AppCompatActivity implements View.OnCli
                     mTvQuizAttemptedStatus.setText(String.format(Locale.getDefault(), "%s / %s", score, maxMarks));
                     double userPercentage = 100 * (((double) quizResult.getScore()) / quizResult.getMaxScore());
                     if(userPercentage > 80.0) {
-
+                        viewCertificate.setVisibility(View.VISIBLE);
+                        mFabStart.setVisibility(View.INVISIBLE);
+                        Intent i = new Intent(getApplicationContext() ,CertificateViewActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("result", quizResult);
+                        i.putExtras(bundle);
+                        startActivity(i);
                     }
                 }
             }

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/backgroundevent"
     tools:context=".CertificateViewActivity">
 
 
@@ -18,21 +19,23 @@
         android:autoSizeTextType="uniform"
         android:gravity="start"
         android:text="Skill: "
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/quizScore"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/contentguideline"
-        app:layout_constraintBottom_toTopOf="@+id/quizScore"/>
+        app:layout_constraintTop_toBottomOf="@+id/contentguideline" />
 
     <TextView
         android:id="@+id/quizScore"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:text="Grade:"
         android:autoSizeMaxTextSize="30sp"
         android:autoSizeMinTextSize="15sp"
         android:autoSizeStepGranularity="2sp"
         android:autoSizeTextType="uniform"
         android:gravity="start"
+        android:text="Grade:"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/obtaineddate"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,16 +45,17 @@
         android:id="@+id/obtaineddate"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:text="Obtained Date:"
         android:autoSizeMaxTextSize="30sp"
         android:autoSizeMinTextSize="12sp"
         android:autoSizeStepGranularity="2sp"
         android:autoSizeTextType="uniform"
         android:gravity="start"
+        android:text="Obtained Date:"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/contentguidelineend"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/quizScore"
-        app:layout_constraintBottom_toTopOf="@+id/contentguidelineend"/>
+        app:layout_constraintTop_toBottomOf="@+id/quizScore" />
 
     <ImageView
         android:id="@+id/certificateView"
@@ -69,6 +73,7 @@
         android:id="@+id/download"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="@color/colorlogin"
         android:autoSizeMaxTextSize="30sp"
         android:autoSizeMinTextSize="12sp"
         android:autoSizeStepGranularity="2sp"
