@@ -12,14 +12,14 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.example.quizkart.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/nav_certificate"
+        android:name="com.example.quizkart.ui.certificate.CertificateFragment"
+        android:label="@string/menu_achievements"
+        tools:layout="@layout/certificate_fragment" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.example.quizkart.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:id="@+id/nav_aboutus"
+        android:name="com.example.quizkart.ui.aboutus.AboutusFragment"
+        android:label="@string/menu_aboutus"
+        tools:layout="@layout/fragment_aboutus" />
 </navigation>

@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FF001437"
+    android:background="#243447"
     tools:context=".MainActivity"
     tools:visibility="visible">
 
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/usernameview"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
@@ -49,7 +49,7 @@
         app:layout_constraintEnd_toStartOf="@+id/textView2"
         app:layout_constraintHeight_max="90dp"
         app:layout_constraintHeight_min="50dp"
-        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintStart_toEndOf="@+id/usernameview"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_max="20dp"
         app:layout_constraintWidth_min="10dp" />
@@ -84,7 +84,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
-        app:constraint_referenced_ids="textView,textView3,textView2"
+        app:constraint_referenced_ids="usernameview,textView3,textView2"
         app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -95,22 +95,11 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="textView,textView3,textView2"
+        app:constraint_referenced_ids="usernameview,textView3,textView2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/imageView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/barrier_title"
-        android:contentDescription="@string/quiz_kart_logo"
-        app:srcCompat="@drawable/_40_f_259711304_6uy6edpbqhmmptfwcluf2hpojscklxoi" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
