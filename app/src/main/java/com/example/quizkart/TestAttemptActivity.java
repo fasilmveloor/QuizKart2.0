@@ -9,7 +9,6 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -412,7 +411,7 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
 
 
             int userScore = 0;
-            final String[] url = {""};
+            String url;
 
             // Evaluating user's score based on performance
             for (Question userAttempt : mUserAttempts) {
@@ -433,7 +432,7 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
 
             DatabaseReference db = FirebaseDatabase.getInstance().getReference("result").child(mAuth.getUid());
             String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-
+            List<String> urls = new ArrayList<>();
             if(userPercentage > 80.0) {
                 Bitmap bitmap = generateCertificate(QUIZ_ID, getusername(),currentDate);
                 ByteArrayOutputStream cert = new ByteArrayOutputStream();
@@ -442,10 +441,12 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
                 StorageReference storageReference = FirebaseStorage.getInstance().getReference(mAuth.getUid());
                 StorageReference certificatestore = storageReference.child("certificates").child(QUIZ_ID);
                 UploadTask uploadTask = certificatestore.putBytes(data);
-                uploadTask.addOnFailureListener(e -> Toast.makeText(TestAttemptActivity.this, "Error: something went wrong", Toast.LENGTH_SHORT).show()).addOnSuccessListener(taskSnapshot -> certificatestore.getDownloadUrl().addOnSuccessListener(uri -> url[0] = uri.toString()));
+                uploadTask.addOnFailureListener(e -> Toast.makeText(TestAttemptActivity.this, "Error: something went wrong", Toast.LENGTH_SHORT).show()).addOnSuccessListener(taskSnapshot -> certificatestore.getDownloadUrl().addOnSuccessListener(uri -> urls.add(uri.toString())));
 
             }
-            QuizResult quizResult = new QuizResult(QUIZ_ID, userScore, maxMarks, currentDate, url[0]);
+            url = urls.get(0);
+            Toast.makeText(getApplicationContext(), url, Toast.LENGTH_LONG).show();
+            QuizResult quizResult = new QuizResult(QUIZ_ID, userScore, maxMarks, currentDate, url);
             db.child(QUIZ_ID).setValue(quizResult);
             loadResultSummary(finalUserScore, maxMarks, userPercentage);
 
@@ -455,16 +456,14 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
     }
 
     private String getusername() {
-        final String[] username = new String[1];
-                DatabaseReference userprofile = FirebaseDatabase.getInstance().getReference("userprofile").child(mAuth.getUid());
+        List<UserInformation> userinfo = new ArrayList<>();
+        DatabaseReference userprofile = FirebaseDatabase.getInstance().getReference("userprofile").child(mAuth.getUid());
         userprofile.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()) {
                     UserInformation user = snapshot.getValue(UserInformation.class);
-                    String firstname = user.getUserName();
-                    String lastname = user.getUserName();
-                    username[0] = firstname + " "+ lastname;
+                    userinfo.add(user);
                 }
             }
 
@@ -473,10 +472,13 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
 
             }
         });
-        String name1 = "hi" + username[0];
+        UserInformation user = userinfo.get(0);
+        String firstname = user.getUserName();
+        String lastname = user.getUserSurname();
+        String username = firstname + " " + lastname;
 
-        Toast.makeText(getApplicationContext(), name1, Toast.LENGTH_LONG).show();
-        return name1;
+        Toast.makeText(getApplicationContext(), username, Toast.LENGTH_LONG).show();
+        return username;
     }
 
     private Bitmap generateCertificate(String quizId, String name, String date) {
@@ -492,7 +494,7 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
         paint.setColor(Color.BLACK);
         paint.setTypeface(tf);
         paint.setTextAlign(Paint.Align.CENTER);
-        paint.setTextSize(convertToPixels( 110));
+        paint.setTextSize(convertToPixels( 150));
 
         Rect textRect = new Rect();
         paint.getTextBounds(name, 0, name.length(), textRect);
@@ -501,7 +503,7 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
 
 
 
-        canvas.drawText(name, 1700, 1390, paint);
+        canvas.drawText(name, 1750, 1390, paint);
         paint.setTextSize(convertToPixels( 80));
         canvas.drawText(quizId, 1750, 1700, paint);
         paint.setTextSize(convertToPixels( 50));
