@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -15,6 +16,10 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.quizkart.databinding.ActivityCertificateViewBinding;
 import com.example.quizkart.models.QuizResult;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -32,7 +37,8 @@ public class CertificateViewActivity extends AppCompatActivity {
     private ImageView certificate;
     private Bundle resultBundle;
     private QuizResult result;
-
+    private FirebaseAuth mauth = FirebaseAuth.getInstance();
+    private StorageReference storageReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +46,11 @@ public class CertificateViewActivity extends AppCompatActivity {
         activityCertificateViewBinding = ActivityCertificateViewBinding.inflate(getLayoutInflater());
         View view = activityCertificateViewBinding.getRoot();
         setContentView(view);
+        storageReference = FirebaseStorage.getInstance().getReference(mauth.getUid());
         
         initializeUI();
+
+
         download.setOnClickListener(v -> {
             Bitmap certificateImage = ((BitmapDrawable)certificate.getDrawable()).getBitmap();
             FileOutputStream outputStream;
@@ -81,6 +90,13 @@ public class CertificateViewActivity extends AppCompatActivity {
         skill.setText("Skill: "+result.getQuizName());
         score.setText(String.format(Locale.getDefault(), "Score : %s / %s", scorem, maxScore));
         obtained_date.setText("Obtained Date: "+result.getDate());
-        Glide.with(this).load(result.getUrl()).into(certificate);
+        StorageReference certificatestore = storageReference.child("certificates").child(result.getQuizName());
+        certificatestore.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Glide.with(CertificateViewActivity.this).load(uri).into(certificate);
+            }
+        });
+
     }
 }

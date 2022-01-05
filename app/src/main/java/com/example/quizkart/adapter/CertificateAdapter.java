@@ -55,13 +55,14 @@ public class CertificateAdapter extends RecyclerView.Adapter<CertificateAdapter.
         // here we will bind data in recyclerview ro items.
         QuizResult result = resultList.get(position);
         holder.quizName.setText(result.getQuizName());
-        String url = getImageUrl(result.getQuizName());
+        setimagefunction(holder.quizImage,result.getQuizName());
+
         String score = Integer.toString(result.getScore());
         String maxMarks = Integer.toString(result.getMaxScore());
         // for image we need to add glide image fetching library from netwok
-        Glide.with(context).load(url).into(holder.quizImage);
-        holder.quizScore.setText(String.format(Locale.getDefault(), "%s / %s", score, maxMarks));
-        holder.quizDate.setText(result.getDate());
+
+        holder.quizScore.setText(String.format(Locale.getDefault(), "Score: %s / %s", score, maxMarks));
+        holder.quizDate.setText("Date:"+result.getDate());
         holder.itemView.setOnClickListener(view -> {
             try{
                 Intent i = new Intent(view.getContext(), CertificateViewActivity.class);
@@ -78,16 +79,15 @@ public class CertificateAdapter extends RecyclerView.Adapter<CertificateAdapter.
 
     }
 
-    private String getImageUrl(String quizName) {
+    private void setimagefunction(ImageView quizImage, String quizName) {
         DatabaseReference db = FirebaseDatabase.getInstance().getReference("category").child(quizName);
-        final String[] url = new String[1];
-        url[0] = "";
+
         db.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()) {
                     Category category = snapshot.getValue(Category.class);
-                    url[0] = Objects.requireNonNull(category).getUrl();
+                    Glide.with(context).load(category.getUrl()).into(quizImage);
                 }
             }
 
@@ -96,9 +96,8 @@ public class CertificateAdapter extends RecyclerView.Adapter<CertificateAdapter.
 
             }
         });
-
-        return url[0];
     }
+
 
     @Override
     public int getItemCount() {

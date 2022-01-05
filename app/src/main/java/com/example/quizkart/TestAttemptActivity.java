@@ -9,6 +9,7 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -73,6 +74,8 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     ActivityTestAttemptBinding activityTestAttemptBinding;
+
+
 
 
     @Override
@@ -412,7 +415,7 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
 
 
             int userScore = 0;
-            String url;
+            final String[] url = {""};
 
             // Evaluating user's score based on performance
             for (Question userAttempt : mUserAttempts) {
@@ -433,21 +436,12 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
 
             DatabaseReference db = FirebaseDatabase.getInstance().getReference("result").child(mAuth.getUid());
             String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-            List<String> urls = new ArrayList<>();
+
             if(userPercentage > 80.0) {
-                Bitmap bitmap = generateCertificate(QUIZ_ID, getusername(),currentDate);
-                ByteArrayOutputStream cert = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, cert);
-                byte[] data = cert.toByteArray();
-                StorageReference storageReference = FirebaseStorage.getInstance().getReference(mAuth.getUid());
-                StorageReference certificatestore = storageReference.child("certificates").child(QUIZ_ID);
-                UploadTask uploadTask = certificatestore.putBytes(data);
-                uploadTask.addOnFailureListener(e -> Toast.makeText(TestAttemptActivity.this, "Error: something went wrong", Toast.LENGTH_SHORT).show()).addOnSuccessListener(taskSnapshot -> certificatestore.getDownloadUrl().addOnSuccessListener(uri -> urls.add(uri.toString())));
+                generateCertificate(QUIZ_ID, currentDate);
 
             }
-            url = urls.get(0);
-            Toast.makeText(getApplicationContext(), url, Toast.LENGTH_LONG).show();
-            QuizResult quizResult = new QuizResult(QUIZ_ID, userScore, maxMarks, currentDate, url);
+            QuizResult quizResult = new QuizResult(QUIZ_ID, userScore, maxMarks, currentDate);
             db.child(QUIZ_ID).setValue(quizResult);
             loadResultSummary(finalUserScore, maxMarks, userPercentage);
 
@@ -456,18 +450,57 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
-    private String getusername() {
 
-        List<UserInformation> userinfo = new ArrayList<>();
+    private void generateCertificate(String quizId, String date) {
+
         DatabaseReference userprofile = FirebaseDatabase.getInstance().getReference("userprofile").child(mAuth.getUid());
         userprofile.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()) {
+                if (snapshot.exists()) {
                     UserInformation user = snapshot.getValue(UserInformation.class);
-                    userinfo.add(user);
-                }
-                else
+                    String firstname = user.getUserName();
+                    String lastname = user.getUserSurname();
+                    String name = firstname + ' '+lastname;
+                    String quizdate = date;
+
+                    Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.cartificate)
+                            .copy(Bitmap.Config.ARGB_8888, true);
+
+                    Typeface tf = Typeface.create("Helvetica", Typeface.BOLD);
+
+                    Paint paint = new Paint();
+                    paint.setStyle(Paint.Style.FILL);
+                    paint.setColor(Color.BLACK);
+                    paint.setTypeface(tf);
+                    paint.setTextAlign(Paint.Align.CENTER);
+                    paint.setTextSize(convertToPixels( 110));
+
+                    Rect textRect = new Rect();
+                    paint.getTextBounds(name, 0, name.length(), textRect);
+
+                    Canvas canvas = new Canvas(bm);
+
+                    Log.d("Certificate Values:","name:"+quizId+name+date);
+
+
+
+                    canvas.drawText(name, 1350, 1025, paint);
+                    paint.setTextSize(convertToPixels( 80));
+                    canvas.drawText(quizId, 1350, 1275, paint);
+                    paint.setTextSize(convertToPixels( 50));
+                    canvas.drawText(date, 500, 1600, paint);
+                    ByteArrayOutputStream cert = new ByteArrayOutputStream();
+                    bm.compress(Bitmap.CompressFormat.PNG, 100, cert);
+                    byte[] data = cert.toByteArray();
+                    StorageReference storageReference = FirebaseStorage.getInstance().getReference(mAuth.getUid());
+                    StorageReference certificatestore = storageReference.child("certificates").child(QUIZ_ID);
+                    UploadTask uploadTask = certificatestore.putBytes(data);
+                    uploadTask.addOnFailureListener(e -> Toast.makeText(TestAttemptActivity.this, "Error: something went wrong", Toast.LENGTH_SHORT).show())
+                            .addOnSuccessListener(taskSnapshot -> {
+
+                            });
+                } else
                     Log.d("Error on Test attempt", "Userinfo not found");
             }
 
@@ -476,49 +509,9 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
 
             }
         });
-        if(userinfo.size() == 0)
-            return  "Null name";
-        UserInformation user = userinfo.get(0);
-        String firstname = user.getUserName();
-        String lastname = user.getUserSurname();
-        String username = firstname + " " + lastname;
 
 
 
-
-        Toast.makeText(getApplicationContext(), username, Toast.LENGTH_LONG).show();
-        return username;
-    }
-
-    private Bitmap generateCertificate(String quizId, String name, String date) {
-
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.cartificate)
-                .copy(Bitmap.Config.ARGB_8888, true);
-
-        Typeface tf = Typeface.create("Helvetica", Typeface.BOLD);
-        Typeface tfdate = Typeface.create("Helvetica", Typeface.BOLD_ITALIC);
-
-        Paint paint = new Paint();
-        paint.setStyle(Paint.Style.FILL);
-        paint.setColor(Color.BLACK);
-        paint.setTypeface(tf);
-        paint.setTextAlign(Paint.Align.CENTER);
-        paint.setTextSize(convertToPixels( 150));
-
-        Rect textRect = new Rect();
-        paint.getTextBounds(name, 0, name.length(), textRect);
-
-        Canvas canvas = new Canvas(bm);
-
-
-
-        canvas.drawText(name, 1750, 1390, paint);
-        paint.setTextSize(convertToPixels( 80));
-        canvas.drawText(quizId, 1750, 1700, paint);
-        paint.setTextSize(convertToPixels( 50));
-        canvas.drawText(date, 600, 2100, paint);
-
-        return bm;
 
 
     }

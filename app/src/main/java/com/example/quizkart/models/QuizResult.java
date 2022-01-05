@@ -13,12 +13,12 @@ public class QuizResult implements Serializable {
     public QuizResult() {
     }
 
-    public QuizResult(String quizName, int score, int maxScore, String date, String url) {
+    public QuizResult(String quizName, int score, int maxScore, String date) {
         this.quizName = quizName;
         this.score = score;
         this.maxScore = maxScore;
-        Date = date;
-        this.url = url;
+        this.Date = date;
+
     }
 
     public String getQuizName() {

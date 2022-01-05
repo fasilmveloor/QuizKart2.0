@@ -123,8 +123,8 @@ public class ProfileActivity extends AppCompatActivity {
                 String phoneno =  profilePhonenoTextView.getText().toString();
                 UserInformation userinformation = new UserInformation(name,surname, phoneno);
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                databaseReference.child(user.getUid()).setValue(userinformation);
-                databaseReference.child(user.getUid()).setValue(userinformation);
+
+                databaseReference.setValue(userinformation);
                 etUsername.onEditorAction(EditorInfo.IME_ACTION_DONE);
             }
         });
@@ -155,8 +155,7 @@ public class ProfileActivity extends AppCompatActivity {
                 String phoneno =  profilePhonenoTextView.getText().toString();
                 UserInformation userinformation = new UserInformation(name,surname, phoneno);
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                databaseReference.child(user.getUid()).setValue(userinformation);
-                databaseReference.child(user.getUid()).setValue(userinformation);
+                databaseReference.setValue(userinformation);
                 etUserSurname.onEditorAction(EditorInfo.IME_ACTION_DONE);
             }
         });
@@ -186,8 +185,7 @@ public class ProfileActivity extends AppCompatActivity {
                 String phoneno =  etUserPhoneno.getText().toString();
                 UserInformation userinformation = new UserInformation(name,surname, phoneno);
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                databaseReference.child(user.getUid()).setValue(userinformation);
-                databaseReference.child(user.getUid()).setValue(userinformation);
+                databaseReference.setValue(userinformation);
                 etUserPhoneno.onEditorAction(EditorInfo.IME_ACTION_DONE);
             }
         });

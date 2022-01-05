@@ -26,18 +26,7 @@ public class AboutusFragment extends Fragment {
         binding = FragmentAboutusBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        binding.emailbutton.setOnClickListener(v -> {
-            Intent i = new Intent(Intent.ACTION_VIEW);
-            i.putExtra(Intent.EXTRA_EMAIL, new String[] {"20352033@pondiuni.ac.in"});
-            i.setType("plain/text");
-            i.setData(Uri.parse("20352033@pondiuni.ac.in"));
-            startActivity(Intent.createChooser(i, "choose an email provider:"));
-        });
-        binding.facebookbutton.setOnClickListener(v -> {
-            Intent i = new Intent(Intent.ACTION_VIEW);
-            i.setData(Uri.parse("www.facebook.com"));
-            startActivity(Intent.createChooser(i, "choose an email provider:"));
-        });
+
 
         return root;
     }

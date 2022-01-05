@@ -108,11 +108,17 @@ public class TestDetailsActivity extends AppCompatActivity implements View.OnCli
                     if(userPercentage > 80.0) {
                         viewCertificate.setVisibility(View.VISIBLE);
                         mFabStart.setVisibility(View.INVISIBLE);
-                        Intent i = new Intent(getApplicationContext() ,CertificateViewActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("result", quizResult);
-                        i.putExtras(bundle);
-                        startActivity(i);
+                        viewCertificate.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent i = new Intent(getApplicationContext() ,CertificateViewActivity.class);
+                                Bundle bundle = new Bundle();
+                                bundle.putSerializable("result", quizResult);
+                                i.putExtras(bundle);
+                                startActivity(i);
+                            }
+                        });
+
                     }
                 }
             }
