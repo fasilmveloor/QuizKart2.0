@@ -108,17 +108,17 @@
     <string name="ok">Ok</string>
     <string name="profile">Profile</string>
     <string name="log_out">Logout</string>
-    <string name="menu_achievements">Acheievements</string>
+    <string name="menu_achievements">Achievements</string>
     <string name="pass_msg">To Pass: 80% or higher</string>
-    <string name="nocertificate">there is no certificate you earned, please attend a quiz and earn a certificate</string>
+    <string name="nocertificate">Sorry! You have not earned any certificate. Try again.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="menu_aboutus">AboutUs</string>
     <string name="text_version">Version : 1.0</string>
-    <string name="aboutapp">This app is created as a part of academic work of Skill enhancement course Android app development. This app is aim to provide skilltest for some essential skills in technology</string>
-    <string name="description1">Let\'s Test your technological knowledge</string>
-    <string name="description2">QuizKart have variouse Quizzes which test your knowledge in the technology domain</string>
-    <string name="description4">Let\'s start the journey to learn technology and earn technology</string>
+    <string name="aboutapp">This app is created as a part of academic work of Skill Enhancement Course, Mobile App Development. This app aims to provide necessary technical skill-set for everyone.</string>
+    <string name="description1">Let\'s Test your technical knowledge</string>
+    <string name="description2">QuizKart enables you to access various quizzes across variety of Computer Science domain to enrich your skill and knowledge.</string>
+    <string name="description4">Let\'s get started, enjoy your journey. All the best!!</string>
     <string name="finish">Finish</string>
-    <string name="description3">For each quiz you win, QuizKart will give you a certificate which you can share on the social media</string>
+    <string name="description3">For each quiz you participate in and score more than 80%, you will earn a certificate from QuizKart which you can share on the Social Media.</string>
 </resources>

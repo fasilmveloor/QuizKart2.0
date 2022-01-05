@@ -19,6 +19,7 @@ import android.graphics.Typeface;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -456,6 +457,7 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
     }
 
     private String getusername() {
+
         List<UserInformation> userinfo = new ArrayList<>();
         DatabaseReference userprofile = FirebaseDatabase.getInstance().getReference("userprofile").child(mAuth.getUid());
         userprofile.addValueEventListener(new ValueEventListener() {
@@ -465,6 +467,8 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
                     UserInformation user = snapshot.getValue(UserInformation.class);
                     userinfo.add(user);
                 }
+                else
+                    Log.d("Error on Test attempt", "Userinfo not found");
             }
 
             @Override
@@ -472,10 +476,15 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
 
             }
         });
+        if(userinfo.size() == 0)
+            return  "Null name";
         UserInformation user = userinfo.get(0);
         String firstname = user.getUserName();
         String lastname = user.getUserSurname();
         String username = firstname + " " + lastname;
+
+
+
 
         Toast.makeText(getApplicationContext(), username, Toast.LENGTH_LONG).show();
         return username;
