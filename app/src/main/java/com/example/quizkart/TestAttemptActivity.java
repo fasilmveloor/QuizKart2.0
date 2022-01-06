@@ -485,11 +485,14 @@ public class TestAttemptActivity extends AppCompatActivity implements View.OnCli
 
 
 
-                    canvas.drawText(name, 1350, 1025, paint);
+                    //canvas.drawText(name, 1350, 1025, paint);
+                    canvas.drawText(name, 1750, 1390, paint);
                     paint.setTextSize(convertToPixels( 80));
-                    canvas.drawText(quizId, 1350, 1275, paint);
+                    //canvas.drawText(quizId, 1350, 1275, paint);
+                    canvas.drawText(quizId, 1750, 1700, paint);
                     paint.setTextSize(convertToPixels( 50));
-                    canvas.drawText(date, 500, 1600, paint);
+                    //canvas.drawText(date, 500, 1600, paint);
+                    canvas.drawText(date, 600, 2100, paint);
                     ByteArrayOutputStream cert = new ByteArrayOutputStream();
                     bm.compress(Bitmap.CompressFormat.PNG, 100, cert);
                     byte[] data = cert.toByteArray();

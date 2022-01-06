@@ -1,7 +1,12 @@
 package com.example.quizkart;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -12,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.quizkart.databinding.ActivityCertificateViewBinding;
@@ -25,6 +31,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Locale;
 
 public class CertificateViewActivity extends AppCompatActivity {
@@ -39,6 +46,9 @@ public class CertificateViewActivity extends AppCompatActivity {
     private QuizResult result;
     private FirebaseAuth mauth = FirebaseAuth.getInstance();
     private StorageReference storageReference;
+    private static int REQUEST_CODE = 100;
+    OutputStream outputStream;
+    String quizid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,29 +62,65 @@ public class CertificateViewActivity extends AppCompatActivity {
 
 
         download.setOnClickListener(v -> {
-            Bitmap certificateImage = ((BitmapDrawable)certificate.getDrawable()).getBitmap();
-            FileOutputStream outputStream;
+            if(ContextCompat.checkSelfPermission(CertificateViewActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE ) == PackageManager.PERMISSION_GRANTED) {
+                saveimage();
+            }
+            else {
+                askPermission();
+            }
 
+
+        });
+    }
+
+    private void askPermission() {
+        ActivityCompat.requestPermissions(CertificateViewActivity.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == REQUEST_CODE) {
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                saveimage();
+            }
+            else{
+                Toast.makeText(getApplicationContext(), "Please provide Required permission", Toast.LENGTH_LONG).show();
+                Log.d(""+grantResults.length, "Result"+grantResults[0]);
+            }
+
+        }
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    private void saveimage() {
+        File dir = new File(Environment.getExternalStorageDirectory(), "quizkart");
+        if(!dir.exists()) {
+            dir.mkdir();
+        }
+        if(dir.exists()) {
             try {
-                File sdcard = Environment.getExternalStorageDirectory();
-                File dir = new File(sdcard.getAbsolutePath()+ "/quizcart");
-                if(!dir.exists()) {
-                    dir.mkdirs();
-                }
+                BitmapDrawable drawable = (BitmapDrawable) certificate.getDrawable();
+                Bitmap certificate = drawable.getBitmap();
 
-                String filename = result.getQuizName()+".png";
-                File outFile = new File(dir, filename);
-                outputStream = new FileOutputStream(outFile);
-                certificateImage.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+                File file = new File(dir, quizid+".jpg");
+                outputStream = new FileOutputStream(file);
+                certificate.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+                Toast.makeText(getApplicationContext(), "Successfully Saved", Toast.LENGTH_LONG).show();
                 outputStream.flush();
                 outputStream.close();
-
-                Log.d("TAG", "picture wrote to" + outFile.getAbsolutePath());
-
-            } catch (IOException e) {
+            } catch (FileNotFoundException e) {
                 e.printStackTrace();
+                Log.d("Error in certificate Save" , ""+e);
             }
-        });
+            catch (IOException e) {
+                e.printStackTrace();
+                Log.d("Error in certificate Save" , ""+e);
+            }
+        }
+
+
     }
 
     private void initializeUI() {
@@ -87,6 +133,7 @@ public class CertificateViewActivity extends AppCompatActivity {
         result = (QuizResult) resultBundle.getSerializable("result");
         int  scorem = result.getScore();
         int maxScore = result.getMaxScore();
+        quizid = result.getQuizName();
         skill.setText("Skill: "+result.getQuizName());
         score.setText(String.format(Locale.getDefault(), "Score : %s / %s", scorem, maxScore));
         obtained_date.setText("Obtained Date: "+result.getDate());
